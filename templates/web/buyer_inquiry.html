@@ -34,29 +34,35 @@
 
         <div class="col-lg-12 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-          <form action="" method="post" role="form" class="php-email-form">
+          <form action="" method="post" role="form" id="buyer_form" class="php-email-form" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="row">
               <div class="col-md-6 form-group">
                 <label for="name" class="control-label label">Name</label>
-                <input type="text" name="buyer_name" class="form-control" id="buyer_name" placeholder="Your Name" required>
+                <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" placeholder="Your Name" required>
               </div>
               <div class="col-md-6 form-group mt-3 mt-md-0">
                 <label for="name" class="control-label label">Company</label>
-                <input type="text" class="form-control" name="company_name" id="email" placeholder="Your Company" required>
+                <input type="text" class="form-control" name="company_name" id="company" placeholder="Your Company" required>
               </div>
             </div>
             <div class="row mt-3">
-              <div class="col-md-6 form-group mt-3 mt-md-0">
+              <div class="col-md-4 form-group mt-3 mt-md-0">
                 <label for="name" class="control-label label">Email</label>
-                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                <input type="email" class="form-control" name="emails" id="emails" placeholder="Your Email" required>
               </div>
-              <div class="col-md-6 form-group">
+              <div class="col-md-4 form-group">
                 <label for="name" class="control-label label">Phone #</label>
                 <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Your Phone #" required>
               </div>
+              
+              <div class="col-md-4 form-group">
+                <label for="name" class="control-label label">Alt Phone #</label>
+                <input type="text" name="alt_phone_no" class="form-control" id="alt_phone_no" placeholder="Your Phone #" >
+              </div>
             </div>
             <div class="form-group mt-3">
-              <label for="name" class="control-label label">Inquery</label>
+              <label for="name" class="control-label label">Inquiry Type</label>
               <select class="form-select" name="inquiry_type" aria-label="Default select example">
                 <option selected>Select Inquiry Type</option>
                 <option value="Equipment">Equipment</option>
@@ -66,21 +72,50 @@
             <div class="row mt-3">
               <div class="col-md-4 form-group mt-3 mt-md-0">
                 <label for="name" class="control-label label">Category</label>
-                <input type="text" class="form-control" name="category" placeholder=" " data-role="tagsinput" id="category" >
+                <div class="tags-input" id="myTags">
+                  <span class="data">
+                        
+                  </span>
+  
+                      <span class="autocomplete">
+                      <input type="text">
+                      <div class="autocomplete-items">
+                      </div>
+                  </span>
+                </div>
               </div>
               <div class="col-md-4 form-group">
                 <label for="name" class="control-label label">Manufacturer</label>
-                <input type="text" name="manufacturer" class="form-control" placeholder=" " data-role="tagsinput" id="manufacturer">
+                  <div class="tags-input-menufacture" id="myTags">
+                    <span class="data_menufacture">
+                          
+                    </span>
+    
+                        <span class="autocomplete">
+                        <input type="text">
+                        <div class="autocomplete-items">
+                        </div>
+                    </span>
+                  </div>
               </div>
               <div class="col-md-4 form-group">
                 <label for="name" class="control-label label">Model</label>
-                <input type="text" name="model" class="form-control"  data-role="tagsinput" id="model">
+                <div class="tags-input-model" id="myTags">
+                  <span class="data_model">
+                        
+                  </span>
+  
+                      <span class="autocomplete">
+                      <input type="text">
+                      <div class="autocomplete-items">
+                      </div>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group mt-3"> 
               <label for="name" class="control-label label">Inquiry</label>
-              <textarea id="html" name="inquery" cols="100" rows="10" class="tinyMce form-control"> 
-              </textarea>
+              <textarea id="html" name="inquires" cols="100" rows="10" class="tinymce-editor form-control"></textarea>
             </div>
             <div class="form-group mt-3">
               <label for="name" class="control-label label">Location</label>
@@ -89,13 +124,13 @@
             <div class="form-group mt-3"> 
               <div class="form-group">
                 <label for="file" class="control-label label">File</label>
-                <input type="file" class="form-control" id="customFile" style="height: 34px;">
+                <input type="file" class="form-control" name="file" id="customFile" style="height: 34px;" multiple>
               </div>
             </div>
              
             <div class="my-3">
               <div class="loading">Loading</div>
-              <div class="error-message"></div>
+              <div class="error-message">The form action property is not set!</div>
               <div class="sent-message">Your message has been sent. Thank you!</div>
             </div>
             <div class="text-center"><button type="submit">Send Message</button></div>

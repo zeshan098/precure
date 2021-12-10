@@ -5,8 +5,5 @@ from django.http import HttpResponse
 def index(request):
     return render(request, 'web/index.html',{})
 
-def buyer_inquiry(request): 
-    return render(request, 'web/buyer_inquiry.html',{})
 
-def vendor_inquiry(request): 
-    return render(request, 'web/vendor_inquiry.html',{})
+

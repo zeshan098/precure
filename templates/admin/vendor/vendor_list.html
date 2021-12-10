@@ -1,0 +1,62 @@
+{% extends 'admin/layout.html' %}
+  {% load static %}  
+  {% block content %} 
+  
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/users/dashboard/">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Buyer List</h5>
+                
+                <!-- Table with stripped rows -->
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th> 
+                      <th scope="col">Name</th>
+                      <th scope="col">Company</th> 
+                      <th scope="col">Phone</th> 
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for vendor_list in vendor_list %}
+                        <tr>
+                            <th scope="row">{{vendor_list.0}}</th> 
+                            <td>{{vendor_list.1}}</td>
+                            <td>{{vendor_list.2}}</td>
+                            <td>{{vendor_list.3}}</td> 
+                            <td><a href="{% url 'view_vendor' vendor_list.0 %}"><i class="bi bi-eye-fill"></i></a> 
+                                <a href="{% url 'edit_vendor' vendor_list.0 %}"><i class="ri-edit-2-fill"></i></a>
+                                <a href="{% url 'delete_vendor' vendor_list.0 %}"><i class="ri-delete-bin-2-fill"></i></a> </td>
+                        </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+  
+
+  </main><!-- End #main -->
+  {% endblock %}

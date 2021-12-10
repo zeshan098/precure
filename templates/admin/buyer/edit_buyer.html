@@ -1,0 +1,345 @@
+{% extends 'admin/layout.html' %}
+  {% load static %}  
+  {% block content %} 
+  
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Edit Buyer</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/users/dashboard/">Home</a></li>
+          <li class="breadcrumb-item active">Buyer</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> </h5>
+  
+                <!-- General Form Elements -->
+                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                    Successfully Update
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                    Somthing Wrong!!
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" role="form" id="update_buyer"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="buyer_id" class="form-control" id="buyer_id" value={{buyer_detail.id}}>
+                  <div class="row mb-3">
+                    <label for="inputText" class="col-sm-2 col-form-label">Vendor Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" value="{{buyer_detail.buyer_vendor_name}}">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">Company Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="company_name" id="company_name"  value="{{buyer_detail.company_name}}">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">Email</th> 
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            {% for email in buyer_email %}
+                            <tr>
+                              <td>{{email}}</td> 
+                              <td><a   data-id="{{ email.id }}" data-email="{{ email }}" class="vendor_edit_form" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                          </tr> 
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Phone No</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="phone_no" class="form-control" id="phone_no" value="{{buyer_detail.phone_no}}">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Alt Phone No</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="alt_phone_no" class="form-control" id="alt_phone_no" value="{{buyer_detail.alt_phone_no}}">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Website</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="website" class="form-control" id="website" value="{{buyer_detail.website}}">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Location</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="location" class="form-control" id="location" value="{{buyer_detail.location}}">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" name="address" style="height: 100px">{{buyer_detail.address}}</textarea>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Category</label>
+                    <div class="col-sm-10">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">Category</th> 
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            {% for category in buyer_category %}
+                            <tr>
+                              <td>{{category}}</td> 
+                              <td><a   data-id="{{ category.id }}" data-category="{{ category }}" class="vendor_edit_category" data-bs-toggle="modal" data-bs-target="#basic_category"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                          </tr> 
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Manufacturer</label>
+                    <div class="col-sm-10">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">Menufacture</th> 
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            {% for menufacture in buyer_menufacture %}
+                            <tr>
+                              <td>{{menufacture}}</td> 
+                              <td><a   data-id="{{ menufacture.id }}" data-menufacture="{{ menufacture }}" class="vendor_edit_menufacture" data-bs-toggle="modal" data-bs-target="#basic_menufacture"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                          </tr> 
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Model</label>
+                    <div class="col-sm-10">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">Model</th> 
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            {% for model in buyer_model %}
+                            <tr>
+                              <td>{{model}}</td> 
+                              <td><a   data-id="{{ model.id }}" data-model="{{ model }}" class="vendor_edit_model" data-bs-toggle="modal" data-bs-target="#basic_model"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                          </tr> 
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Admin Notes</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" name="admin_notes" style="height: 100px">{{buyer_detail.admin_notes}}</textarea>
+                    </div>
+                  </div>
+                   
+  
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Submit Button</label>
+                    <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary">Submit Form</button>
+                    </div>
+                  </div>
+  
+                </form><!-- End General Form Elements -->
+  
+              </div>
+            </div>
+  
+          </div>
+   
+        </div>
+      </section>
+  
+      <!-- Email update POpup -->
+      <div class="modal fade" id="basicModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update Email</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-email" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Email</label>
+                         <div>
+                             <input type="email" class="form-control input-lg" id="email" name="email_list" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End update POpup   Modal-->
+
+      <!-- Email update Category POpup -->
+      <div class="modal fade" id="basic_category" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update Category</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-buyer-cat" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Category</label>
+                         <div>
+                             <input type="text" class="form-control input-lg" id="category" name="category" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End update Category   Modal-->
+
+      <!-- Email update Menufacture POpup -->
+      <div class="modal fade" id="basic_menufacture" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update Menufacture</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-buyer-menufacture" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Menufacture</label>
+                         <div>
+                             <input type="text" class="form-control input-lg" id="menufacture" name="menufacture_name" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End update Menufacture   Modal-->
+
+      <!-- Email update POpup -->
+      <div class="modal fade" id="basic_model" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update Model</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-buyer-model" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Model</label>
+                         <div>
+                             <input type="text" class="form-control input-lg" id="model" name="model_name" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End update   Modal-->
+
+  </main><!-- End #main -->
+  {% endblock %}

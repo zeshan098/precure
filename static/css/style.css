@@ -30,10 +30,10 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Nunito", sans-serif;
 }
-.label{
-  font-size: larger; 
-    color: #000000;
-    padding: 0px 0px 9px 0px;
+.control-label{
+  font-size: larger !important;
+  color: #000000;
+  padding: 0px 0px 9px 0px !important;
 }
 /*--------------------------------------------------------------
 # Sections
@@ -2400,15 +2400,30 @@ section {
     color: #000000
 }
 
-.bootstrap-tagsinput .tag {
+/* .bootstrap-tagsinput .tag {
   margin-right: 2px;
   color: #4255f1;
   font-weight: 700;
-}
+} */
 .bootstrap-tagsinput {
   width: 100% !important;
 }
 
+.label-info {
+  background-color: #5bc0de;
+}
+.label {
+    display: inline;
+    padding: 0.2em 0.6em 0.3em;
+    /* font-size: 75%; */
+    /* font-weight: 700; */
+    /* line-height: 1; */
+    color: #000;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+}
 .custom-file-uploader {
   position: relative;
    
@@ -2424,4 +2439,11 @@ section {
     opacity: 0;
     cursor: default;
  
+}
+
+#myTags {
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(81, 203, 238, 1);
 }

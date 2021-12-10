@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
+from django.db import connection
 from django.http import HttpResponse, HttpResponseRedirect
+
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib import messages
@@ -38,3 +40,8 @@ def logout_request(request):
 @login_required(login_url='/users/login')
 def dashboard(request):
     return render(request, 'admin/index.html',{}) 
+
+
+
+
+ 

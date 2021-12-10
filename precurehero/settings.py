@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users.apps.UserConfig',
+    'multi_email_field',
     'buyer',
     'pages', 
+    'vendor',  
 ]
 
 MIDDLEWARE = [
@@ -66,11 +68,16 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                 'filter_tags': 'vendor.templatetags.filter',
+            
+            }
         },
     },
 ]
 
 WSGI_APPLICATION = 'precurehero.wsgi.application'
+
 
 
 # Database
@@ -79,7 +86,7 @@ WSGI_APPLICATION = 'precurehero.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'precure_web', 
+        'NAME': 'precure', 
         'USER': 'postgres', 
         'PASSWORD': 'Pakistan098',
         'HOST': '127.0.0.1', 
@@ -125,4 +132,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

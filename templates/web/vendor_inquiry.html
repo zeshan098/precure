@@ -14,9 +14,9 @@
 
       <ol>
         <li><a href="/">Home</a></li>
-        <li>Vendor Inquiry</li>
+        <li>Quotation Form</li>
       </ol>
-      <h2>Vendor Inquiry</h2>
+      <h2>Quotation Form</h2>
 
     </div>
   </section><!-- End Breadcrumbs -->
@@ -25,7 +25,7 @@
     <div class="container">
 
       <header class="section-header"> 
-        <p>Vendor Form</p>
+        <p>Quotation Form</p>
       </header>
 
       <div class="row">
@@ -34,65 +34,92 @@
 
         <div class="col-lg-12 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
 
-          <form action="" method="post" role="form" class="php-email-form">
+          <form action="" method="post" role="form" id="vendor_form" class="php-email-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <label for="name" class="control-label label">Inquiry Reference No</label>
+                <input type="text" name="inquiry_reference_no" class="form-control" id="inquiry_reference_no"  required>
+              </div> 
+            </div>
             <div class="row">
               <div class="col-md-6 form-group">
                 <label for="name" class="control-label label">Name</label>
-                <input type="text" name="vendor_name" class="form-control" id="vendor_name" placeholder="Your Name" required>
+                <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" placeholder="Your Name" required>
               </div>
               <div class="col-md-6 form-group mt-3 mt-md-0">
                 <label for="name" class="control-label label">Company</label>
-                <input type="text" class="form-control" name="company_name" id="email" placeholder="Your Company" required>
+                <input type="text" class="form-control" name="company_name" id="company_name" placeholder="Your Company" required>
               </div>
             </div>
             <div class="row mt-3">
-              <div class="col-md-6 form-group mt-3 mt-md-0">
+              <div class="col-md-4 form-group mt-3 mt-md-0">
                 <label for="name" class="control-label label">Email</label>
-                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                <input type="email" class="form-control" name="emails" id="emails" placeholder="Your Email" multiple="multiple" data-role="tagsinput">
               </div>
-              <div class="col-md-6 form-group">
+              <div class="col-md-4 form-group">
                 <label for="name" class="control-label label">Phone #</label>
                 <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Your Phone #" required>
+              </div>
+              <div class="col-md-4 form-group">
+                <label for="name" class="control-label label">Website</label>
+                <input type="text" name="website" class="form-control" id="website" >
               </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-12 form-group mt-3 mt-md-0">
                   <label for="name" class="control-label label">Address</label>
-                  <input type="text" class="form-control" name="address" id="address" placeholder="Your Address" required>
+                  <textarea   name="address" cols="50" rows="5" class="form-control"></textarea> 
                 </div> 
             </div>
             
             <div class="form-group mt-3"> 
                 <label for="name" class="control-label label">Quotation</label>
-                <textarea id="html" name="quotation" cols="100" rows="10" class="tinyMce form-control"> 
-                </textarea>
+                <textarea   name="quotation"   class="tinymce-editor"></textarea>
             </div>
-
+            <div class="row mt-3">
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                <label for="name" class="control-label label">Category</label>
+                <input type="text" class="form-control" name="category" multiple="multiple" placeholder=" " data-role="tagsinput" id="category" >
+              </div>
+              <div class="col-md-4 form-group">
+                <label for="name" class="control-label label">Manufacture</label>
+                <input type="text" name="menufactures" class="form-control" multiple="multiple" placeholder=" " data-role="tagsinput" id="manufacturer">
+              </div>
+              <div class="col-md-4 form-group">
+                <label for="name" class="control-label label">Model</label>
+                <input type="text" name="models" class="form-control" multiple="multiple" placeholder=" " data-role="tagsinput" id="model">
+              </div>
+            </div>
              
             <div class="row mt-3">
-              <div class="col-md-6 form-group mt-3 mt-md-0">
-                <label for="name" class="control-label label">Discount</label>
-                <input type="text" class="form-control" name="discount" placeholder=" "  id="discount" >
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                <label for="name" class="control-label label">Sub Total</label>
+                <input type="text" class="form-control" name="sub_total"  id="sub_total" value="0" >
               </div>
-              <div class="col-md-6 form-group">
+              <div class="col-md-4 form-group mt-3 mt-md-0">
+                <label for="name" class="control-label label">Discount</label>
+                <input type="text" class="form-control" name="discount" value="0"  id="discount" >
+              </div>
+              <div class="col-md-4 form-group">
                 <label for="name" class="control-label label">Total</label>
-                <input type="text" name="total" class="form-control" placeholder=" "   id="total">
+                <input type="text" name="total_amount" class="form-control" placeholder=" "   id="total">
               </div> 
             </div>
             <div class="form-group mt-3">
               <label for="name" class="control-label label">Notes</label>
-              <input type="text" class="form-control" name="notes" id="location" placeholder=" " >
+              <textarea   name="notes" cols="50" rows="5" class="form-control"></textarea>  
             </div>
             <div class="form-group mt-3"> 
               <div class="form-group">
                 <label for="file" class="control-label label">File</label>
-                <input type="file" class="form-control" id="customFile" style="height: 34px;">
+                <input type="file" class="form-control" name="file" id="customFile" style="height: 34px;" multiple>
               </div>
             </div>
              
             <div class="my-3">
               <div class="loading">Loading</div>
-              <div class="error-message"></div>
+              <div class="error-message">The form action property is not set!</div>
               <div class="sent-message">Your message has been sent. Thank you!</div>
             </div>
             <div class="text-center"><button type="submit">Send Message</button></div>

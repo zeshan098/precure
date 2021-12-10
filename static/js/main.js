@@ -289,50 +289,320 @@
 })();
 
 // Tags Input
-console.clear();
+// console.clear();
 
-$(function() {
-  $('input').on('change', function(event) {
+// $(function() {
+//   $('input').on('change', function(event) {
 
-    var $element = $(event.target);
-    var $container = $element.closest('.example');
+//     var $element = $(event.target);
+//     var $container = $element.closest('.example');
 
-    if (!$element.data('tagsinput'))
-      return;
+//     if (!$element.data('tagsinput'))
+//       return;
 
-    var val = $element.val();
-    if (val === null)
-      val = "null";
-    var items = $element.tagsinput('items');
-    console.log(items[items.length - 1]);
+//     var val = $element.val();
+//     if (val === null)
+//       val = "null";
+//     var items = $element.tagsinput('items');
+//     console.log(items[items.length - 1]);
 
-    $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
-    $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+//     $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+//     $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
 
-    console.log(val);
-    console.log(items);
-    console.log(JSON.stringify(val));
-    console.log(JSON.stringify(items));
+//     console.log(val);
+//     console.log(items);
+//     console.log(JSON.stringify(val));
+//     console.log(JSON.stringify(items));
 
-    console.log(items[items.length - 1]);
+//     console.log(items[items.length - 1]);
 
-  }).trigger('change');
-});
-
-
+//   }).trigger('change');
+// });
 
 
-$(document).ready(function () {
-	tinyMCE.init({
-		selector: "#html",
-		// content_css: 'https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
-		plugins: ["code visualblocks"],
-		valid_elements : '*[*]',
-		toolbar: "undo redo | styleselect | bold italic | fontsizeselect | alignleft aligncenter alignright alignjustify | preview",
-		schema: "html5",
-		// verify_html : false,
-		// valid_children : "+a[div], +div[*]"
-		// extended_valid_elements : "div[*]",
-	});
-});
+// var data =
+// '[{ "value": 1, "text": "Task 1", "continent": "Task" }, { "value": 2, "text": "Task 2", "continent": "Task" }, { "value": 3, "text": "Task 3", "continent": "Task" }, { "value": 4, "text": "Task 4", "continent": "Task" }, { "value": 5, "text": "Task 5", "continent": "Task" }, { "value": 6, "text": "Task 6", "continent": "Task" } ]';
+
+// //get data pass to json
+// var task = new Bloodhound({
+// datumTokenizer: Bloodhound.tokenizers.obj.whitespace("text"),
+// queryTokenizer: Bloodhound.tokenizers.whitespace,
+// local: jQuery.parseJSON(data) //your can use json type
+// });
+
+// task.initialize();
+
+// var elt = $("#category");
+// elt.tagsinput({
+// itemValue: "value",
+// itemText: "text",
+// typeaheadjs: {
+//   name: "task",
+//   displayKey: "text",
+//   source: task.ttAdapter()
+// }
+// });
+
+$(function () {
+
+  console.log($('#myTags').tagsValues())
+
+
+})
+
+function runSuggestions(element,query) {
+
+  /*
+  using ajax to populate suggestions
+   */
+  let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
+  $.getJSON("http://127.0.0.1:8000/buyer/buyer_category/", function( data ) {
+      _tag_input_suggestions_data = data;
+      $.each(data,function (key,value) {
+          let template = $("<div>"+value.name+"</div>").hide()
+          sug_area.append(template)
+          template.show()
+
+      })
+  });
+
+}
+
+function runSuggestions_menufatcure(element,query) {
+
+  /*
+  using ajax to populate suggestions
+   */
+  let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
+  $.getJSON("http://127.0.0.1:8000/buyer/buyer_menufacture/", function( data ) {
+      _tag_input_suggestions_data = data;
+      $.each(data,function (key,value) {
+          let template = $("<div>"+value.name+"</div>").hide()
+          sug_area.append(template)
+          template.show()
+
+      })
+  });
+
+}
+
+function runSuggestions_model(element,query) {
+
+  /*
+  using ajax to populate suggestions
+   */
+  let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
+  $.getJSON("http://127.0.0.1:8000/buyer/buyer_model/", function( data ) {
+      _tag_input_suggestions_data = data;
+      $.each(data,function (key,value) {
+          let template = $("<div>"+value.name+"</div>").hide()
+          sug_area.append(template)
+          template.show()
+
+      })
+  });
+
+}
+/**
+   * Initiate TinyMCE Editor
+   */
+
+ var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+ tinymce.init({
+   selector: 'textarea.tinymce-editor',
+   plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+   imagetools_cors_hosts: ['picsum.photos'],
+   menubar: 'file edit view insert format tools table help',
+   toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+   toolbar_sticky: true,
+   autosave_ask_before_unload: true,
+   autosave_interval: '30s',
+   autosave_prefix: '{path}{query}-{id}-',
+   autosave_restore_when_empty: false,
+   autosave_retention: '2m',
+   image_advtab: true,
+   link_list: [{
+       title: 'My page 1',
+       value: 'https://www.tiny.cloud'
+     },
+     {
+       title: 'My page 2',
+       value: 'http://www.moxiecode.com'
+     }
+   ],
+   image_list: [{
+       title: 'My page 1',
+       value: 'https://www.tiny.cloud'
+     },
+     {
+       title: 'My page 2',
+       value: 'http://www.moxiecode.com'
+     }
+   ],
+   image_class_list: [{
+       title: 'None',
+       value: ''
+     },
+     {
+       title: 'Some class',
+       value: 'class-name'
+     }
+   ],
+   importcss_append: true,
+   file_picker_callback: function(callback, value, meta) {
+     /* Provide file and text for the link dialog */
+     if (meta.filetype === 'file') {
+       callback('https://www.google.com/logos/google.jpg', {
+         text: 'My text'
+       });
+     }
+
+     /* Provide image and alt text for the image dialog */
+     if (meta.filetype === 'image') {
+       callback('https://www.google.com/logos/google.jpg', {
+         alt: 'My alt text'
+       });
+     }
+
+     /* Provide alternative source and posted for the media dialog */
+     if (meta.filetype === 'media') {
+       callback('movie.mp4', {
+         source2: 'alt.ogg',
+         poster: 'https://www.google.com/logos/google.jpg'
+       });
+     }
+   },
+   templates: [{
+       title: 'New Table',
+       description: 'creates a new table',
+       content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'
+     },
+     {
+       title: 'Starting my story',
+       description: 'A cure for writers block',
+       content: 'Once upon a time...'
+     },
+     {
+       title: 'New list with dates',
+       description: 'New List with dates',
+       content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>'
+     }
+   ],
+   template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+   template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+   height: 600,
+   image_caption: true,
+   quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+   noneditable_noneditable_class: 'mceNonEditable',
+   toolbar_mode: 'sliding',
+   contextmenu: 'link image imagetools table',
+   skin: useDarkMode ? 'oxide-dark' : 'oxide',
+   content_css: useDarkMode ? 'dark' : 'default',
+   content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+ });
+
+
+
+//insert data to input in load page
+// elt.tagsinput("add", {
+//   value: 1,
+//   text: "task 1",
+//   continent: "task"
+// });
+
+
+// $('input[name="category"]').amsifySuggestags({
+//   suggestions: ['Apple', 'Banana', 'Cherries', 'Dates', 'Guava'], 
+//   whiteList: true,
+//   afterAdd : function(value) {
+//     console.info(value);
+//   },
+//   afterRemove : function(value) {
+//     console.info(value);
+//   },
+// });
  
+ 
+//buyer Form
+$(document).ready(function (e) {
+	$("#buyer_form").on('submit',(function(e) {
+	 e.preventDefault();
+	 $.ajax({
+	 url: '/buyer/buyer_inquiry_form/',
+	  type: "POST",
+	  data:  new FormData(this),
+	  contentType: false,
+			cache: false,
+	  processData:false,
+	  
+	  success: function(data)
+		 {
+	   if(data.error)
+        {
+        // invalid file format.
+        $("error-message").show();
+        }
+	   else
+        {
+            // view uploaded file.
+            $(".sent-message").show();
+            $("#buyer_form")[0].reset(); 
+            // location.reload();
+            }
+		 },
+		          
+	   });
+	}));
+});
+
+//Vendor Form
+$(document).ready(function (e) {
+	$("#vendor_form").on('submit',(function(e) {
+	 e.preventDefault();
+	 $.ajax({
+	 url: '/vendor/vendor_inquiry_form/',
+	  type: "POST",
+	  data:  new FormData(this),
+	  contentType: false,
+			cache: false,
+	  processData:false,
+	  
+	  success: function(data)
+		 {
+	   if(data.error)
+        {
+        // invalid file format.
+        $("error-message").show();
+        }
+	   else
+        {
+            // view uploaded file.
+            $(".sent-message").show();
+            //$("#vendor_form")[0].reset(); 
+            // location.reload();
+            }
+		 },
+		          
+	   });
+	}));
+});
+
+
+   //subtract logic
+$(document).ready(function() {
+    if($("#vendor_form").length){
+        $( "#sub_total" ).keyup(function() {
+            $.sum();          
+        }); 
+        $( "#discount" ).keyup(function() {
+            $.sum();          
+        }); 
+     }   
+        $.sum = function(){
+            $("#total").val(parseInt($("#sub_total").val()) -     parseInt($("#discount").val()));
+        } 
+});
+
+
+

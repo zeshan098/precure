@@ -1082,3 +1082,36 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 13px;
   color: #012970;
 }
+
+.bootstrap-tagsinput {
+  width: 100% !important;
+}
+.label {
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+}
+.label-info {
+  background-color: #5bc0de;
+}
+
+.alert-success{
+  display: none;
+}
+.alert-danger{
+  display: none;
+}
+
+.alert-primary{
+  display: none;
+}
+.alert-danger1{
+  display: none;
+}
