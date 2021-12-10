@@ -287,3 +287,52 @@
   });
 
 })();
+
+// Tags Input
+console.clear();
+
+$(function() {
+  $('input').on('change', function(event) {
+
+    var $element = $(event.target);
+    var $container = $element.closest('.example');
+
+    if (!$element.data('tagsinput'))
+      return;
+
+    var val = $element.val();
+    if (val === null)
+      val = "null";
+    var items = $element.tagsinput('items');
+    console.log(items[items.length - 1]);
+
+    $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+    $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+
+    console.log(val);
+    console.log(items);
+    console.log(JSON.stringify(val));
+    console.log(JSON.stringify(items));
+
+    console.log(items[items.length - 1]);
+
+  }).trigger('change');
+});
+
+
+
+
+$(document).ready(function () {
+	tinyMCE.init({
+		selector: "#html",
+		// content_css: 'https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
+		plugins: ["code visualblocks"],
+		valid_elements : '*[*]',
+		toolbar: "undo redo | styleselect | bold italic | fontsizeselect | alignleft aligncenter alignright alignjustify | preview",
+		schema: "html5",
+		// verify_html : false,
+		// valid_children : "+a[div], +div[*]"
+		// extended_valid_elements : "div[*]",
+	});
+});
+ 

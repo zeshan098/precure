@@ -1,0 +1,108 @@
+{% extends 'web/layout/base.html' %}
+  {% load static %}
+  {% block head %}
+    <title>Get Industrial Equipment, Spare Parts, Materials & Repairs. Procure Hero</title>
+    <meta content="Procurement in Equipment,Spare Parts,General Supplies,Materials, Repairs in Breakdown,Service,Overhaul,General" name="description">
+    <meta content="air conditioning,boiler,compressor,pump,turbo charger, navigation equipment,diesel engine,steam turbine,hydraulic steering,separator,refrigeration,deck machinery,electrical equipment,instrumentation,automation,communication equipment,control system,auxiliary engine,caterpillar,ingersoll rand,alfa laval,cummins,yanmar,abb,man se,westfalia,saacke,sulzer,wartsila,ihi" name="keywords">
+    <link rel="canonical" href="http://www.procurehero.com/" />
+  {% endblock %}
+  {% block content %} 
+
+  <!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li>Vendor Inquiry</li>
+      </ol>
+      <h2>Vendor Inquiry</h2>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+  <!-- ======= Contact Section ======= -->
+  <section id="contact" class="contact">
+    <div class="container">
+
+      <header class="section-header"> 
+        <p>Vendor Form</p>
+      </header>
+
+      <div class="row">
+
+       
+
+        <div class="col-lg-12 mt-5 mt-lg-0" data-aos="fade-left" data-aos-delay="200">
+
+          <form action="" method="post" role="form" class="php-email-form">
+            <div class="row">
+              <div class="col-md-6 form-group">
+                <label for="name" class="control-label label">Name</label>
+                <input type="text" name="vendor_name" class="form-control" id="vendor_name" placeholder="Your Name" required>
+              </div>
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <label for="name" class="control-label label">Company</label>
+                <input type="text" class="form-control" name="company_name" id="email" placeholder="Your Company" required>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <label for="name" class="control-label label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="name" class="control-label label">Phone #</label>
+                <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Your Phone #" required>
+              </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 form-group mt-3 mt-md-0">
+                  <label for="name" class="control-label label">Address</label>
+                  <input type="text" class="form-control" name="address" id="address" placeholder="Your Address" required>
+                </div> 
+            </div>
+            
+            <div class="form-group mt-3"> 
+                <label for="name" class="control-label label">Quotation</label>
+                <textarea id="html" name="quotation" cols="100" rows="10" class="tinyMce form-control"> 
+                </textarea>
+            </div>
+
+             
+            <div class="row mt-3">
+              <div class="col-md-6 form-group mt-3 mt-md-0">
+                <label for="name" class="control-label label">Discount</label>
+                <input type="text" class="form-control" name="discount" placeholder=" "  id="discount" >
+              </div>
+              <div class="col-md-6 form-group">
+                <label for="name" class="control-label label">Total</label>
+                <input type="text" name="total" class="form-control" placeholder=" "   id="total">
+              </div> 
+            </div>
+            <div class="form-group mt-3">
+              <label for="name" class="control-label label">Notes</label>
+              <input type="text" class="form-control" name="notes" id="location" placeholder=" " >
+            </div>
+            <div class="form-group mt-3"> 
+              <div class="form-group">
+                <label for="file" class="control-label label">File</label>
+                <input type="file" class="form-control" id="customFile" style="height: 34px;">
+              </div>
+            </div>
+             
+            <div class="my-3">
+              <div class="loading">Loading</div>
+              <div class="error-message"></div>
+              <div class="sent-message">Your message has been sent. Thank you!</div>
+            </div>
+            <div class="text-center"><button type="submit">Send Message</button></div>
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- End Contact Section -->
+
+  {% endblock %}
