@@ -7,17 +7,25 @@ from django.db.models.fields import DateTimeField
 # Create your models here.
 class BuyerInquiry(models.Model):
     STATUS=(
-        ('1', 'Open'),
-        ('2', 'Close'), 
+        ('1', 'Received'),
+        ('2', 'Sourcing'), 
+        ('3', 'Submitted'), 
+        ('4', 'Won'), 
+        ('5', 'Lost'), 
+        ('6', 'Close'), 
     )   
     user = models.ForeignKey(User, on_delete=models.CASCADE)    
+    reference_no = models.CharField(max_length=200, null=True, blank=True)
     inquiry_type = models.CharField(max_length=200, null=True, blank=True)
     inquires = models.TextField(null=True, blank=True) 
     creation_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now_add=True) 
+    created_by = models.CharField(max_length=50, null=True, blank=True)
+    updated_by = models.CharField(max_length=50, null=True, blank=True)
     status = models.CharField(max_length=20, null=True, blank=True, choices=STATUS)
   
     def __str__(self): 
-        return self.category
+        return self.user
 
 class BuyerAttachment(models.Model):
     STATUS=(
@@ -79,3 +87,12 @@ class BuyerEmails(models.Model):
   
     def __str__(self): 
         return self.email_list
+
+class BuyerInquiryToVendor(models.Model):
+       
+    inquiry_id = models.CharField(max_length=20, null=True, blank=True)  
+    quotes_received = models.CharField(max_length=20, null=True, blank=True)  
+    no_of_vendor_send = models.CharField(max_length=20, null=True, blank=True)  
+  
+    def __str__(self): 
+        return self.inquiry_id

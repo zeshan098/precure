@@ -5,11 +5,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Edit Buyer</h1>
+      <h1>Edit Buyer Inquiry</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/users/dashboard/">Home</a></li>
-          <li class="breadcrumb-item active">Buyer</li>
+          <li class="breadcrumb-item active">Buyer Inquiry</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -31,38 +31,229 @@
                     Somthing Wrong!!
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <form action="" method="post" role="form" id="update_buyer"  enctype="multipart/form-data">
+                <form action="" method="post" role="form" id="update_inquiry_form"  enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="hidden" name="buyer_id" class="form-control" id="buyer_id" value={{buyer_detail.id}}>
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Buyer Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" value="{{buyer_detail.buyer_vendor_name}}">
-                    </div>
+                {% for buyer_inquiry_view in buyer_inquiry_view %}
+                    <input type="hidden" name="inquiry_id" class="form-control" id="inquiry_id" value={{buyer_inquiry_view.0}}>
+                    <div class="row mb-3">
+                      <label for="inputText" class="col-sm-2 col-form-label">Reference #</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="reference_no" class="form-control" id="reference_no" value="{{buyer_inquiry_view.9}}">
+                      </div>
                   </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">Company Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="company_name" id="company_name"  value="{{buyer_detail.company_name}}">
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Buyer Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" value="{{buyer_inquiry_view.1}}">
+                        </div>
                     </div>
-                  </div>
+                    <div class="row mb-3">
+                        <label for="inputEmail" class="col-sm-2 col-form-label">Company Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="company_name" id="company_name"  value="{{buyer_inquiry_view.2}}">
+                        </div>
+                    </div>
+                   
+                    <div class="row mb-3">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">Email</th> 
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                {% for email in buyer_email %}
+                                <tr>
+                                  <td>{{email.1}}</td> 
+                                  <td><a   data-id="{{ email.0 }}" data-email="{{ email.1 }}" class="vendor_edit_form" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                    <a data-id="{{ email.0 }}" class="delete_buyer_email"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
+                                </tr>
+                                {% endfor %}
+                              </tr> 
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Add Email</label>
+                        <div class="col-sm-10">
+                          <a data-id="{{ buyer_inquiry_view.8 }}"  data-bs-toggle="modal" data-bs-target="#basicemailModal" class="btn btn-primary vendor_edit_form">Add</a>
+                        </div>
+                      </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Phone No</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="phone_no" class="form-control" id="phone_no" value="{{buyer_inquiry_view.3}}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Alt Phone No</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="alt_phone_no" class="form-control" id="alt_phone_no" value="{{buyer_inquiry_view.4}}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Inquiry Type</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="inquiry_type" aria-label="Default select example">
+                                <option selected>Select Inquiry Type</option>
+                                <option value="Equipment" {% if buyer_inquiry_view.5|slugify == 'Equipment'|slugify %}selected{% endif %}>Equipment</option>
+                                <option value="Repair" {% if buyer_inquiry_view.5|slugify == 'Repair'|slugify  %}selected{% endif %}>Repair</option> 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Category</label>
+                        <div class="col-sm-10">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">Category</th> 
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                {% for category in buyer_category %}
+                                <tr>
+                                  <td>{{category.1}}</td> 
+                                  <td><a   data-id="{{ category.0 }}" data-category="{{ category.1 }}" class="vendor_edit_category" data-bs-toggle="modal" data-bs-target="#basic_category"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                    <a data-id="{{ category.0 }}" class="delete_buyer_category"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
+                                </tr>
+                                {% endfor %}
+                              </tr> 
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Add Category</label>
+                        <div class="col-sm-10">
+                          <a data-id="{{ buyer_inquiry_view.8 }}"  data-bs-toggle="modal" data-bs-target="#basic_buyer_add_category" class="btn btn-primary vendor_edit_category">Add</a>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Manufacturer</label>
+                        <div class="col-sm-10">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">Menufacture</th> 
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                {% for menufacture in buyer_menufacture %}
+                                <tr>
+                                  <td>{{menufacture.1}}</td> 
+                                  <td><a   data-id="{{ menufacture.0 }}" data-menufacture="{{ menufacture.1 }}" class="vendor_edit_menufacture" data-bs-toggle="modal" data-bs-target="#basic_menufacture"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                    <a data-id="{{ menufacture.0 }}" class="delete_buyer_menufacture"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
+                                </tr>
+                                {% endfor %}
+                              </tr> 
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Add Manufacturer</label>
+                        <div class="col-sm-10">
+                          <a data-id="{{ buyer_inquiry_view.8 }}"  data-bs-toggle="modal" data-bs-target="#basic_add_menufacture" class="btn btn-primary vendor_edit_menufacture">Add</a>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Model</label>
+                        <div class="col-sm-10">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col">Model</th> 
+                                <th scope="col">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                {% for model in buyer_model %}
+                                <tr>
+                                  <td>{{model.1}}</td> 
+                                  <td><a   data-id="{{ model.0 }}" data-model="{{ model.1 }}" class="vendor_edit_model" data-bs-toggle="modal" data-bs-target="#basic_model"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                    <a data-id="{{ model.0 }}" class="delete_buyer_model"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
+                                </tr>
+                                {% endfor %}
+                              </tr> 
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Add Model</label>
+                        <div class="col-sm-10">
+                          <a data-id="{{ buyer_inquiry_view.8 }}"  data-bs-toggle="modal" data-bs-target="#basic_buyer_model" class="btn btn-primary vendor_edit_model">Add</a>
+                        </div>
+                      </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Location</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="location" class="form-control" id="location" value="{{ buyer_inquiry_view.7 }}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Inquiry</label>
+                        <div class="col-sm-10">
+                            <textarea id="html" name="inquires" cols="100" rows="10" class="tinymce-editor form-control">{{ buyer_inquiry_view.6 | safe}}</textarea>
+                        </div>
+                    </div>
                   <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Send To</label>
                     <div class="col-sm-10">
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th scope="col">Email</th> 
+                            <th scope="col">Select</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Company Name</th> 
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for sender_email_lists in sender_email_lists %}
+                          <tr>
+                            <td>
+                              <div class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input" id="customCheck{{ forloop.counter }}">
+                                  <label class="custom-control-label" for="customCheck{{ forloop.counter }}">{{ forloop.counter }}</label>
+                              </div>
+                            </td>
+                            <td>{{sender_email_lists.0}}</td>
+                            <td>{{sender_email_lists.1}}</td> 
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                       
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Attachment</label>
+                    <div class="col-sm-10">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th scope="col">Attachment</th> 
                             <th scope="col">Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            {% for email in buyer_email %}
+                            {% for buyer_attachment in buyer_attachment %}
                             <tr>
-                              <td>{{email}}</td> 
-                              <td><a   data-id="{{ email.id }}" data-email="{{ email }}" class="vendor_edit_form" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
-                                <a data-id="{{ email.id }}" class="delete_buyer_email"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
+                              <td><a href="../../media/{{  buyer_attachment.1  }}" target="_new">{{  buyer_attachment.1  }}</a> </td> 
+                              <td><a   data-id="{{ buyer_attachment.0 }}"  class="buyer_update_image_model" data-bs-toggle="modal" data-bs-target="#basic_update_image_model"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                <a data-id="{{ buyer_attachment.0 }}" class="delete_buyer_attachment"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
                             </tr>
                             {% endfor %}
                           </tr> 
@@ -71,146 +262,21 @@
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Email</label>
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Attachment</label>
                     <div class="col-sm-10">
-                      <a data-id="{{ buyer_detail.id }}"  data-bs-toggle="modal" data-bs-target="#basicemailModal" class="btn btn-primary vendor_edit_form">Add</a>
+                      <a data-id="{{ buyer_inquiry_view.0 }}"  data-bs-toggle="modal" data-bs-target="#basic_add_image_model" class="btn btn-primary buyer_update_image_model">Add</a>
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Phone No</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="phone_no" class="form-control" id="phone_no" value="{{buyer_detail.phone_no}}">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Alt Phone No</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="alt_phone_no" class="form-control" id="alt_phone_no" value="{{buyer_detail.alt_phone_no}}">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Website</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="website" class="form-control" id="website" value="{{buyer_detail.website}}">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Location</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="location" class="form-control" id="location" value="{{buyer_detail.location}}">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" name="address" style="height: 100px">{{buyer_detail.address}}</textarea>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Category</label>
-                    <div class="col-sm-10">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th scope="col">Category</th> 
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            {% for category in buyer_category %}
-                            <tr>
-                              <td>{{category}}</td> 
-                              <td><a   data-id="{{ category.id }}" data-category="{{ category }}" class="vendor_edit_category" data-bs-toggle="modal" data-bs-target="#basic_category"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
-                                <a data-id="{{ category.id }}" class="delete_buyer_category"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
-                            </tr>
-                            {% endfor %}
-                          </tr> 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Category</label>
-                    <div class="col-sm-10">
-                      <a data-id="{{ buyer_detail.id }}"  data-bs-toggle="modal" data-bs-target="#basic_buyer_add_category" class="btn btn-primary vendor_edit_category">Add</a>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Manufacturer</label>
-                    <div class="col-sm-10">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th scope="col">Menufacture</th> 
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            {% for menufacture in buyer_menufacture %}
-                            <tr>
-                              <td>{{menufacture}}</td> 
-                              <td><a   data-id="{{ menufacture.id }}" data-menufacture="{{ menufacture }}" class="vendor_edit_menufacture" data-bs-toggle="modal" data-bs-target="#basic_menufacture"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
-                                <a data-id="{{ menufacture.id }}" class="delete_buyer_menufacture"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
-                            </tr>
-                            {% endfor %}
-                          </tr> 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Manufacturer</label>
-                    <div class="col-sm-10">
-                      <a data-id="{{ buyer_detail.id }}"  data-bs-toggle="modal" data-bs-target="#basic_add_menufacture" class="btn btn-primary vendor_edit_menufacture">Add</a>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Model</label>
-                    <div class="col-sm-10">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th scope="col">Model</th> 
-                            <th scope="col">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            {% for model in buyer_model %}
-                            <tr>
-                              <td>{{model}}</td> 
-                              <td><a   data-id="{{ model.id }}" data-model="{{ model }}" class="vendor_edit_model" data-bs-toggle="modal" data-bs-target="#basic_model"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
-                                <a data-id="{{ model.id }}" class="delete_buyer_model"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
-                            </tr>
-                            {% endfor %}
-                          </tr> 
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Model</label>
-                    <div class="col-sm-10">
-                      <a data-id="{{ buyer_detail.id }}"  data-bs-toggle="modal" data-bs-target="#basic_buyer_model" class="btn btn-primary vendor_edit_model">Add</a>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Admin Notes</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" name="admin_notes" style="height: 100px">{{buyer_detail.admin_notes}}</textarea>
-                    </div>
-                  </div>
+                  
                    
   
                   <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Submit Button</label>
                     <div class="col-sm-10">
-                      <button type="submit" class="btn btn-primary">Submit Form</button>
+                      <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                   </div>
-  
+                {% endfor %}
                 </form><!-- End General Form Elements -->
   
               </div>
@@ -220,7 +286,7 @@
    
         </div>
       </section>
-  
+ 
       <!-- Email update POpup -->
       <div class="modal fade" id="basicModal" tabindex="-1">
         <div class="modal-dialog">
@@ -516,6 +582,81 @@
         </div>
       </div>
       <!-- End update   Modal-->
+
+
+      <!--  update POpup Image -->
+      <div class="modal fade" id="basic_update_image_model" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Update Attachment</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-update-buyer-attachment" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Attachment</label>
+                         <div>
+                             <input type="file" class="form-control input-lg" id="model" name="file"  >
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_attchmnet" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End update   Image-->
+
+      <!-- Email Add image POpup -->
+      <div class="modal fade" id="basic_add_image_model" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Attachmnet</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="form_add_image_model" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                    <div class="form-group">
+                      <label class="control-label">Attachment</label>
+                      <div>
+                          <input type="file" class="form-control input-lg" id="model" name="file"  >
+                      </div>
+                  </div> <br>
+                     <button type="submit" id="update_email" class="btn btn-primary">Add</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Add POpup   Modal-->
 
   </main><!-- End #main -->
   {% endblock %}

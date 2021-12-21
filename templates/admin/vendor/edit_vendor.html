@@ -61,12 +61,19 @@
                             {% for email in vendor_email %}
                             <tr>
                               <td>{{email}}</td> 
-                              <td><a   data-id="{{ email.id }}" data-email="{{ email }}" class="vendor_edit_form" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                              <td><a   data-id="{{ email.id }}" data-email="{{ email }}" class="vendor_edit_form" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                <a data-id="{{ email.id }}" class="delete_vendor_email"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
                             </tr>
                             {% endfor %}
                           </tr> 
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Email</label>
+                    <div class="col-sm-10">
+                      <a data-id="{{ vendor_detail.id }}"  data-bs-toggle="modal" data-bs-target="#basicEmailModal" class="btn btn-primary vendor_edit_form">Add</a>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -114,12 +121,19 @@
                             {% for category in vendor_category %}
                             <tr>
                               <td>{{category}}</td> 
-                              <td><a   data-id="{{ category.id }}" data-category="{{ category }}" class="vendor_edit_category" data-bs-toggle="modal" data-bs-target="#basic_category"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                              <td><a   data-id="{{ category.id }}" data-category="{{ category }}" class="vendor_edit_category" data-bs-toggle="modal" data-bs-target="#basic_category"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                <a data-id="{{ category.id }}" class="delete_vendor_category"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
                             </tr>
                             {% endfor %}
                           </tr> 
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Category</label>
+                    <div class="col-sm-10">
+                      <a data-id="{{ vendor_detail.id }}"  data-bs-toggle="modal" data-bs-target="#basic_add_category" class="btn btn-primary vendor_edit_category">Add</a>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -137,12 +151,19 @@
                             {% for menufacture in vendor_menufacture %}
                             <tr>
                               <td>{{menufacture}}</td> 
-                              <td><a   data-id="{{ menufacture.id }}" data-menufacture="{{ menufacture }}" class="vendor_edit_menufacture" data-bs-toggle="modal" data-bs-target="#basic_menufacture"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                              <td><a   data-id="{{ menufacture.id }}" data-menufacture="{{ menufacture }}" class="vendor_edit_menufacture" data-bs-toggle="modal" data-bs-target="#basic_menufacture"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                <a data-id="{{ menufacture.id }}" class="delete_vendor_menufacture"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
                             </tr>
                             {% endfor %}
                           </tr> 
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Manufacturer</label>
+                    <div class="col-sm-10">
+                      <a data-id="{{ vendor_detail.id }}"  data-bs-toggle="modal" data-bs-target="#vendor_add_menufacture" class="btn btn-primary vendor_edit_menufacture">Add</a>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -160,12 +181,19 @@
                             {% for model in vendor_model %}
                             <tr>
                               <td>{{model}}</td> 
-                              <td><a   data-id="{{ model.id }}" data-model="{{ model }}" class="vendor_edit_model" data-bs-toggle="modal" data-bs-target="#basic_model"><i class="ri-edit-2-fill" aria-hidden="true"></i></a></td>
+                              <td><a   data-id="{{ model.id }}" data-model="{{ model }}" class="vendor_edit_model" data-bs-toggle="modal" data-bs-target="#basic_model"><i class="ri-edit-2-fill" aria-hidden="true"></i></a>
+                                <a data-id="{{ model.id }}" class="delete_vendor_model"><i class="ri-delete-bin-2-line" aria-hidden="true"></i></a></td>
                             </tr>
                             {% endfor %}
                           </tr> 
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Add Model</label>
+                    <div class="col-sm-10">
+                      <a data-id="{{ vendor_detail.id }}"  data-bs-toggle="modal" data-bs-target="#vendor_add_model" class="btn btn-primary vendor_edit_model">Add</a>
                     </div>
                   </div>
                   <div class="row mb-3">
@@ -230,6 +258,43 @@
       </div>
       <!-- End update POpup   Modal-->
 
+      <!-- Email add POpup -->
+      <div class="modal fade" id="basicEmailModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Email</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-edit-email" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Email</label>
+                         <div>
+                             <input type="email" class="form-control input-lg" id="email" name="email_list" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End add POpup   Modal-->
+
       <!-- Email update Category POpup -->
       <div class="modal fade" id="basic_category" tabindex="-1">
         <div class="modal-dialog">
@@ -267,12 +332,49 @@
       </div>
       <!-- End update Category   Modal-->
 
+      <!-- Email Add Category POpup -->
+      <div class="modal fade" id="basic_add_category" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Category</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-add-category" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Category</label>
+                         <div>
+                             <input type="text" class="form-control input-lg" id="category" name="category" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Add Category   Modal-->
+
       <!-- Email update Menufacture POpup -->
       <div class="modal fade" id="basic_menufacture" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Update Menufacture</h5>
+              <h5 class="modal-title">Add Menufacture</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -304,7 +406,44 @@
       </div>
       <!-- End update Menufacture   Modal-->
 
-      <!-- Email update POpup -->
+      <!-- Email Add Menufacture POpup -->
+      <div class="modal fade" id="vendor_add_menufacture" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Menufacture</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-form-add-menufacture" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Menufacture</label>
+                         <div>
+                             <input type="text" class="form-control input-lg" id="menufacture" name="menufacture_name" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Add Menufacture   Modal-->
+
+      <!-- Model update POpup -->
       <div class="modal fade" id="basic_model" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -340,6 +479,44 @@
         </div>
       </div>
       <!-- End update   Modal-->
+
+
+      <!-- Model Add POpup -->
+      <div class="modal fade" id="vendor_add_model" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Model</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                Successfully Update
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger alert-danger1 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form action="" method="post" role="form" id="my-add-form-model" enctype="multipart/form-data" >
+                {% csrf_token %}  
+                 <input type="hidden" name="id" class="pop_id" id="id" value=""> 
+                     <div class="form-group">
+                         <label class="control-label">Model</label>
+                         <div>
+                             <input type="text" class="form-control input-lg" id="model" name="model_name" value="">
+                         </div>
+                     </div> <br> 
+                     <button type="submit" id="update_email" class="btn btn-primary">Update</button>
+               </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Add   Modal-->
 
   </main><!-- End #main -->
   {% endblock %}

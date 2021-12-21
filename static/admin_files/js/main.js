@@ -366,8 +366,7 @@ $(function() {
 
 $(document).ready(function () {
 	$("#my-form").submit(function (e) {  
-    e.preventDefault(); // Cancel the default action
-    console.log("zeshna");   
+    e.preventDefault(); // Cancel the default action  
    let id = $('#id').val();
    $.ajax({
     url: "/vendor/update_vendor_email/" + id + "/",
@@ -400,6 +399,40 @@ $(document).ready(function () {
 });
 
 
+$(document).ready(function () {
+	$("#my-form-edit-email").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action  
+   let id = $('#id').val();
+   $.ajax({
+    url: "/vendor/add_vendor_email/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
 //update Category vendor
 $(function() {
 
@@ -419,6 +452,40 @@ $(document).ready(function () {
    let id = $('#id').val();
    $.ajax({
     url: "/vendor/update_vendor_category/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
+$(document).ready(function () {
+	$("#my-form-add-category").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/vendor/add_vendor_category/" + id + "/",
     type: "POST",
     data:  new FormData(this),
     contentType: false,
@@ -494,6 +561,40 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+	$("#my-form-add-menufacture").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/vendor/add_vendor_menufacture/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
 //update Model vendor
 $(function() {
 
@@ -513,6 +614,86 @@ $(document).ready(function () {
    let id = $('#id').val();
    $.ajax({
     url: "/vendor/update_vendor_model/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
+
+$(document).ready(function () {
+	$("#my-add-form-model").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/vendor/add_vendor_model/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
+//update Image Buyer
+$(function() {
+
+	$('.buyer_update_image_model').on('click',function(){
+	      
+	  var id = $(this).data('id');   
+	  // AJAX request  
+	  $(".pop_id").val(id);  
+	});
+});
+
+$(document).ready(function () {
+	$("#my-form-update-buyer-attachment").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/buyer/update_buyer_attachment/" + id + "/",
     type: "POST",
     data:  new FormData(this),
     contentType: false,
@@ -635,6 +816,35 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+	$("#my-buyer-form-email").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/buyer/add_buyer_email/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false, 
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
 //Buyer Category
 $(document).ready(function () {
 	$("#my-form-buyer-cat").submit(function (e) {  
@@ -665,6 +875,36 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+	$("#my-form-add-buyer-cat").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/buyer/add_buyer_category/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false, 
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
+//Menufcture
 $(document).ready(function () {
 	$("#my-form-buyer-menufacture").submit(function (e) {  
     e.preventDefault(); // Cancel the default action 
@@ -699,13 +939,81 @@ $(document).ready(function () {
   });
 });
 
+$(document).ready(function () {
+	$("#my-form-add-buyer-menufacture").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/buyer/add_buyer_menufacture/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
 
+//model popup 
 $(document).ready(function () {
 	$("#my-form-buyer-model").submit(function (e) {  
     e.preventDefault(); // Cancel the default action 
    let id = $('#id').val();
    $.ajax({
     url: "/buyer/update_buyer_model/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+
+$(document).ready(function () {
+	$("#my-form-add-buyer-model").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/buyer/add_buyer_model/" + id + "/",
     type: "POST",
     data:  new FormData(this),
     contentType: false,
@@ -769,3 +1077,438 @@ $(document).ready(function () {
   }));
 });
 
+//admin side inquiry form edit js
+$(document).ready(function (e) {
+	$("#update_inquiry_form").on('submit',(function(e) {
+	 e.preventDefault();
+   let id = $('#inquiry_id').val();
+	 $.ajax({
+	 url: '/buyer/update_buyer_inquiry/'+ id+ "/",
+	  type: "POST",
+	  data:  new FormData(this),
+	  contentType: false,
+			cache: false,
+	  processData:false,
+	  
+	  success: function(data)
+		 {
+      if(data == "error")
+      {
+       $(".alert-danger").show();
+      }
+      else
+      {
+       // view uploaded file.
+       $(".alert-success").show(); 
+       // location.reload();
+      }
+		 },
+		          
+	   });
+	}));
+});
+
+//send mail
+
+$(document).ready(function (e) {
+	$("#send_buyer_email").on('submit',(function(e) {
+	 e.preventDefault(); 
+	 $.ajax({
+	 url: '/buyer/send_buyer_inquiry_to_vendor/',
+	  type: "POST",
+	  data:  new FormData(this),
+	  contentType: false,
+			cache: false,
+	  processData:false,
+	  
+	  success: function(data)
+		 {
+      if(data == "error")
+      {
+       $(".alert-danger").show();
+      }
+      else
+      {
+       // view uploaded file.
+       $(".alert-success").show(); 
+       // location.reload();
+      }
+		 },
+		          
+	   });
+	}));
+});
+
+//buyer delete
+
+$(function() {
+
+	$('.delete_buyer_email').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/buyer/delete_buyer_email/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+
+$(function() {
+
+	$('.delete_buyer_category').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/buyer/delete_buyer_category/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+
+$(function() {
+
+	$('.delete_buyer_menufacture').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/buyer/delete_buyer_menufacture/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+
+$(function() {
+
+	$('.delete_buyer_model').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/buyer/delete_buyer_model/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+$(function() {
+
+	$('.delete_buyer_attachment').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/buyer/delete_buyer_attachment/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+$(document).ready(function () {
+	$("#form_add_image_model").submit(function (e) {  
+    e.preventDefault(); // Cancel the default action 
+   let id = $('#id').val();
+   $.ajax({
+    url: "/buyer/add_buyer_attachment/" + id + "/",
+    type: "POST",
+    data:  new FormData(this),
+    contentType: false,
+      cache: false,
+    processData:false,
+    beforeSend : function()
+    {
+     //$("#preview").fadeOut();
+     $("#err").fadeOut();
+    },
+    success: function(data)
+       {
+       if(data == "error")
+       {
+        $(".alert-danger").show();
+       }
+       else
+       {
+        // view uploaded file.
+        $(".alert-primary").show(); 
+        location.reload();
+       }
+       },
+          
+     });
+  });
+});
+//vendor delete
+$(function() {
+
+	$('.delete_vendor_email').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/vendor/delete_vendor_email/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+
+$(function() {
+
+	$('.delete_vendor_category').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/vendor/delete_vendor_category/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+
+$(function() {
+
+	$('.delete_vendor_menufacture').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/vendor/delete_vendor_menufacture/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+
+$(function() {
+
+	$('.delete_vendor_model').on('click',function(){
+	  
+	  var id = $(this).data('id');     
+    if(confirm("Are you sure you want to remove this  from database?"))
+    {
+    $.ajax({
+      url:'/vendor/delete_vendor_model/'+ id + "/",
+      method:"POST",
+      data:{"req_id":id},
+      success: function (response){ 
+        $(".alert-success").show(); 
+        location.reload();
+      }
+      })
+      }
+    else
+    {
+    return false;
+    }
+	});
+});
+
+ 
+ //subtract logic
+ $(document).ready(function() {
+  if($("#send_quotation").length){
+      $( "#sub_total" ).keyup(function() {
+          $.sum();          
+      }); 
+      $( "#discount" ).keyup(function() {
+          $.sum();          
+      }); 
+   }   
+      $.sum = function(){
+          $("#total").val(parseInt($("#sub_total").val()) -     parseInt($("#discount").val()));
+      } 
+      
+});
+
+$(document).ready(function() {
+  if($("#send_buyer_quotation").length){
+      $( "#sub_total" ).keyup(function() {
+          $.sum();          
+      }); 
+      $( "#discount" ).keyup(function() {
+          $.sum();          
+      }); 
+   }   
+      $.sum = function(){
+          $("#total").val(parseInt($("#sub_total").val()) -     parseInt($("#discount").val()));
+      } 
+      
+});
+
+//Buyer Quotation from Vendor(procure)
+$(document).ready(function (e) {
+	$("#send_buyer_quotation").on('submit',(function(e) {
+	 e.preventDefault(); 
+	 $.ajax({
+	 url: '/vendor/send_quotation_to_buyer_email/',
+	  type: "POST",
+	  data:  new FormData(this),
+	  contentType: false,
+			cache: false,
+	  processData:false,
+	  
+	  success: function(data)
+		 {
+      if(data == "error")
+      {
+       $(".alert-danger").show();
+      }
+      else
+      {
+       // view uploaded file.
+       $(".alert-success").show(); 
+       // location.reload();
+      }
+		 },
+		          
+	   });
+	}));
+});
+
+
+$(document).ready(function (e) {
+	$("#send_quotation").on('submit',(function(e) {
+	 e.preventDefault(); 
+	 $.ajax({
+	 url: '/vendor/send_quotation/',
+	  type: "POST",
+	  data:  new FormData(this),
+	  contentType: false,
+			cache: false,
+	  processData:false,
+	  
+	  success: function(data)
+		 {
+      if(data == "error")
+      {
+       $(".alert-danger").show();
+      }
+      else
+      {
+       // view uploaded file.
+       $(".alert-success").show(); 
+       // location.reload();
+      }
+		 },
+		          
+	   });
+	}));
+});
+
+$(function(){
+  $(".reference_no").keyup(function() {
+  var token = $('input[name="csrfmiddlewaretoken"]').prop('value');  
+  var searchref = $(this).val(); 
+  if(searchref!='') {
+    $.ajax({ 
+      type: "POST",
+      url: "/vendor/get_buyer_email/",
+      data: {'csrfmiddlewaretoken':token, 'searchref':searchref},
+      cache: false,
+      success: function(response) {
+        var jsonData = JSON.parse(response);
+        for (var i = 0; i < jsonData.length; i++) {
+          var counter = jsonData[i];  
+          var email = counter.fields.email_list;  
+        $("#to_email").val(email); 
+        }
+      }
+    });
+  }
+  return false;
+});
+});

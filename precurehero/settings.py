@@ -135,3 +135,13 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'email-smtp.us-east-2.amazonaws.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'AKIAQ2UUTETCPUNCDHPJ'
+EMAIL_HOST_PASSWORD = 'BMasVF97ZfdI9OAeHMB+azwixUDeAFWF3YP6alUUiGRU'
+EMAIL_USE_TLS = True
+
+ 

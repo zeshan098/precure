@@ -1,0 +1,137 @@
+{% extends 'admin/layout.html' %}
+  {% load filter_tags  %}
+  {% load static %}  
+  {% block content %} 
+  
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Inquiry</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li> 
+            <li class="breadcrumb-item active">View</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+    {% for buyer_inquiry_view in buyer_inquiry_view %}
+      <section class="section profile">
+        <div class="row">
+           
+  
+          <div class="col-xl-12">
+  
+            <div class="card">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                  <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                  </li>
+  
+               
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                    
+                    <h5 class="card-title">Inquiry Detail</h5>
+  
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                      <div class="col-lg-9 col-md-8">{{buyer_inquiry_view.0}}</div>
+                    </div>
+  
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Company</div>
+                      <div class="col-lg-9 col-md-8">{{buyer_inquiry_view.1}}</div>
+                    </div>
+                   
+  
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Email</div> 
+                        <div class="col-lg-9 col-md-8"> 
+                            {% for buyer_email in buyer_email %}
+                                
+                              <span class="badge bg-warning text-dark">{{  buyer_email.0  }} </span> 
+                           {% endfor %}
+                        </div>
+                    </div>  
+   
+  
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Phone</div>
+                      <div class="col-lg-9 col-md-8">{{buyer_inquiry_view.2}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">alt Phone</div>
+                        <div class="col-lg-9 col-md-8">{{buyer_inquiry_view.3}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Inquiry Type</div>
+                        <div class="col-lg-9 col-md-8">{{buyer_inquiry_view.4}}</div>
+                      </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Category</div> 
+                          <div class="col-lg-9 col-md-8"> 
+                            {% for buyer_category in buyer_category %}
+                                  
+                            <span class="badge bg-primary">{{  buyer_category.0  }} </span> 
+                          {% endfor %}
+                          </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Menufacture</div>
+                        <div class="col-lg-9 col-md-8">  
+                            {% for buyer_menufacture in buyer_menufacture %}
+                                
+                            <span class="badge bg-success">{{  buyer_menufacture.0  }} </span> 
+                           {% endfor %} 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label">Model</div>
+                        <div class="col-lg-9 col-md-8"> 
+                            {% for buyer_model in buyer_model %}
+                                
+                            <span class="badge bg-warning text-dark">{{  buyer_model.0  }} </span> 
+                           {% endfor %} 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Inquiry</div>
+                      <div class="col-lg-9 col-md-8">{{buyer_inquiry_view.5 | safe}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Attachment</div>
+                      <div class="col-lg-9 col-md-8">
+                        {% for buyer_attachment in buyer_attachment %}
+                                
+                        <span class="badge bg-warning text-dark">
+                            <a href="../../media/{{  buyer_attachment.0  }}" target="_new">{{  buyer_attachment.0  }}</a> 
+                        </span> 
+                       {% endfor %} 
+                      </div>
+                    </div>
+  
+                     
+  
+                  </div>
+  
+                   
+  
+                </div><!-- End Bordered Tabs -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+    {% endfor %}
+  
+
+  </main><!-- End #main -->
+  {% endblock %}

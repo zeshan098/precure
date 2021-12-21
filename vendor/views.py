@@ -1,17 +1,67 @@
+import json
+import datetime
 from django.shortcuts import render, redirect
 from random import choice
 from string import ascii_lowercase, digits
-from django.http import HttpResponse
+from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage  
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 from django.db import connection
-from django.contrib.auth.models import User as DjangoUser
+from django.contrib.auth.models import User as DjangoUser 
 from users.models import StaffUser as User, StaffUser
 from vendor.models import VendorInquiry, VendorAttachment, Categories, Menufactures, VendorModels, Emails
+from buyer.models import BuyerInquiry, BuyerInquiryToVendor, BuyerCategories, BuyerMenufactures, BuyerModels, BuyerEmails
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def vendor_inquiry(request): 
     return render(request, 'web/vendor_inquiry.html',{})
 
+@csrf_exempt
+def get_category_tag(request): 
+    if request.method == 'POST':
+        reference_no = request.POST.get('reference_no') 
+        
+        buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+        staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id) 
+        category = BuyerCategories.objects.filter(buyer_id=staff_user.id) 
+        # list = []
+        # for obj in category:
+        #     list.append(obj) 
+
+        return JsonResponse(serializers.serialize('json', category, fields=('category_name')), safe=False)
+
+@csrf_exempt
+def get_menufacture_tag(request): 
+    if request.method == 'POST':
+        reference_no = request.POST.get('reference_no') 
+        
+        buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+        staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id)  
+        menufacture = BuyerMenufactures.objects.filter(buyer_id=staff_user.id) 
+        # list = []
+        # for obj in category:
+        #     list.append(obj)
+
+        return JsonResponse(serializers.serialize('json', menufacture, fields=('menufacture_name')), safe=False)
+
+@csrf_exempt
+def get_model_tag(request): 
+    if request.method == 'POST':
+        reference_no = request.POST.get('reference_no') 
+        
+        buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+        staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id)  
+        model = BuyerModels.objects.filter(buyer_id=staff_user.id) 
+        # list = []
+        # for obj in category:
+        #     list.append(obj)
+
+        return JsonResponse(serializers.serialize('json', model, fields=('model_name')), safe=False)
 
 def generate_random_username(length=11, chars=ascii_lowercase + digits, split=4, delimiter='-'):
     username = ''.join([choice(chars) for i in range(length)])
@@ -27,24 +77,26 @@ def generate_random_username(length=11, chars=ascii_lowercase + digits, split=4,
 
 def vendor_inquiry_form(request): 
     generated_username = generate_random_username()
+    no_of_qoute = 1
     if request.is_ajax():
         inquiry_reference_no = request.POST.get('inquiry_reference_no')
         buyer_vendor_name = request.POST.get('buyer_vendor_name')
         company_name = request.POST.get('company_name')
-        emails = request.POST.get('emails')
+        emails_list = request.POST.get('emails')
         phone_no = request.POST.get('phone_no')
         website = request.POST.get('website')
         address = request.POST.get('address')  
         quotation_des = request.POST.get('quotation')
-        category = request.POST.get('category')
-        menufacture = request.POST.get('menufactures') 
-        model = request.POST.get('models')
+        category_list = request.POST.get('category')
+        menufacture_list = request.POST.get('menufactures') 
+        model_list = request.POST.get('models')
         sub_total = request.POST.get('sub_total')
         discount = request.POST.get('discount')
         total_amount = request.POST.get('total_amount') 
         notes = request.POST.get('notes')   
         myfile = request.FILES.getlist('file')
-        print(category)
+        email_to="operations@procurehero.com"
+        print(category_list)
 
         user = DjangoUser.objects.create( email="precure@gmail.com", username="procureher" + str(generated_username))
         this_user = User.objects.create(user=user,buyer_vendor_name=buyer_vendor_name,
@@ -62,8 +114,8 @@ def vendor_inquiry_form(request):
             VendorAttachment.objects.create(vendorinq=vendorinfo, status='1', attachment_file=f )
         
         try: 
-            if category != '': 
-                cat_list = category.split (",")
+            if category_list != '': 
+                cat_list = category_list.split (",")
                 for cat in  cat_list: 
                     try:  
                         cats = Categories()
@@ -76,9 +128,9 @@ def vendor_inquiry_form(request):
                         print("not save")
 
 
-            if menufacture != '': 
-                menufacture_list = menufacture.split (",")     
-                for menufacture in  menufacture_list: 
+            if menufacture_list != '': 
+                menufacture_lists = menufacture_list.split (",")     
+                for menufacture in  menufacture_lists: 
                     try:  
                         menufacture_lists = Menufactures()
                         menufacture_lists.vendor=this_user
@@ -89,9 +141,9 @@ def vendor_inquiry_form(request):
                     except:
                         print("not save")
             
-            if model != '':
-                model_list = model.split (",")
-                for model in  model_list: 
+            if model_list != '':
+                model_lists = model_list.split (",")
+                for model in  model_lists: 
                     try:  
                         b_model = VendorModels()
                         b_model.vendor=this_user
@@ -102,9 +154,9 @@ def vendor_inquiry_form(request):
                     except:
                         print("not save")
 
-            if emails != '':
-                emails_list = emails.split (",") 
-                for email in  emails_list: 
+            if emails_list != '':
+                emails_lists = emails_list.split (",") 
+                for email in  emails_lists: 
                     try:  
                         emails = Emails()
                         emails.vendor=this_user
@@ -114,13 +166,33 @@ def vendor_inquiry_form(request):
                         print("email_list Saved")
                     except:
                         print("not save")
+            try:
+                print(email)  
+                html_content = render_to_string("web/email/vendor_inquiry_email.html", {'ref_no':inquiry_reference_no, 
+                'quotation':quotation_des, 'category_tag':category_list, 'manufacture_tag':menufacture_list,
+                'model':model_list, 'sub_total':sub_total, 'discount': discount, 'total':total_amount,
+                'vendor_notes':notes }) 
+                msg = EmailMessage("Quotation Form",html_content,"operations@procurehero.com",[email_to])
+                msg.content_subtype = 'html'
+                for f in myfile:   
+                    msg.attach_file('media/'+f.name) 
+                msg.send()  
+                emails_lists = emails_list.split (",") 
+                for email in  emails_lists:  
+                    send_mail("Inquiry Form", "Thank you For Quotation", "operations@procurehero.com", [email])
+                    print("send mail")
+                inquiry_update = BuyerInquiry.objects.get(reference_no=inquiry_reference_no)
+                quote_received = BuyerInquiryToVendor.objects.get(inquiry_id=inquiry_update.id)
+                no_of_qoute +=int(quote_received.quotes_received) 
+                BuyerInquiryToVendor.objects.filter(inquiry_id=inquiry_update.id).update(quotes_received=no_of_qoute)
+            except:
+                print("email not send")            
             message = "success"
             return HttpResponse(message)
         except: 
             message = "error"
             return HttpResponse(message)
-        message = "success"
-        return HttpResponse(message)
+         
     else:
         message = "error"
         return HttpResponse(message)
@@ -151,6 +223,28 @@ def update_vendor_email(request, id):
         message = "error"
         return HttpResponse(message)
 
+# Email delete for vendor
+@login_required(login_url='/users/login')
+@csrf_exempt    
+def delete_vendor_email(request, id): 
+    try:
+        Emails.objects.filter(pk=id).update(status='2')
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
+@login_required(login_url='/users/login')    
+def add_vendor_email(request, id):
+    try:
+        Emails.objects.create(vendor_id=id,email_list=request.POST.get('email_list'), status='1') 
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
 # Category Updata admin Side for vendor
 @login_required(login_url='/users/login')    
 def update_vendor_category(request, id):
@@ -161,6 +255,29 @@ def update_vendor_category(request, id):
     except:
         message = "error"
         return HttpResponse(message)
+
+@login_required(login_url='/users/login')
+@csrf_exempt    
+def delete_vendor_category(request, id): 
+    try:
+        Categories.objects.filter(pk=id).update(status='2')
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
+@login_required(login_url='/users/login')    
+def add_vendor_category(request, id):
+    try:
+        Categories.objects.create(vendor_id=id,category_name=request.POST.get('category'), status='1') 
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
+
 
 # Menufacture Updata admin Side for vendor
 @login_required(login_url='/users/login')    
@@ -173,6 +290,26 @@ def update_vendor_menufacture(request, id):
         message = "error"
         return HttpResponse(message)
 
+@login_required(login_url='/users/login')
+@csrf_exempt    
+def delete_vendor_menufacture(request, id): 
+    try:
+        Menufactures.objects.filter(pk=id).update(status='2')
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
+@login_required(login_url='/users/login')    
+def add_vendor_menufacture(request, id):
+    try:
+        Menufactures.objects.create(vendor_id=id,menufacture_name=request.POST.get('menufacture_name'), status='1') 
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
 
 # Model Updata admin Side for vendor
 @login_required(login_url='/users/login')    
@@ -185,16 +322,39 @@ def update_vendor_model(request, id):
         message = "error"
         return HttpResponse(message)
 
+
+@login_required(login_url='/users/login')
+@csrf_exempt    
+def delete_vendor_model(request, id): 
+    try:
+        VendorModels.objects.filter(pk=id).update(status='2')
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
+@login_required(login_url='/users/login')    
+def add_vendor_model(request, id):
+    try:
+        VendorModels.objects.create(vendor_id=id,model_name=request.POST.get('model_name'), status='1') 
+        message = "success"
+        return HttpResponse(message)
+    except:
+        message = "error"
+        return HttpResponse(message)
+
+# //admin vendor 
 @login_required(login_url='/users/login')    
 def add_edit_vendor(request, vendor_id=None):
     generated_username = generate_random_username()
     if vendor_id:
         try:
             vendor_detail = StaffUser.objects.get(user_id=vendor_id)
-            vendor_category = Categories.objects.filter(vendor_id=vendor_detail)
-            vendor_menufacture = Menufactures.objects.filter(vendor_id=vendor_detail)
-            vendor_model = VendorModels.objects.filter(vendor_id=vendor_detail)
-            vendor_email = Emails.objects.filter(vendor_id=vendor_detail) 
+            vendor_category = Categories.objects.filter(vendor_id=vendor_detail, status='1')
+            vendor_menufacture = Menufactures.objects.filter(vendor_id=vendor_detail, status='1')
+            vendor_model = VendorModels.objects.filter(vendor_id=vendor_detail, status='1')
+            vendor_email = Emails.objects.filter(vendor_id=vendor_detail, status='1') 
         except StaffUser.DoesNotExist:
             vendor_detail = ''
 
@@ -326,3 +486,181 @@ def delete_vendor(request, id):
     delete_vendor.save()
       
     return redirect('vendor_list')
+
+
+@login_required(login_url='/users/login')
+def quotation_list(request): 
+    
+    cursor = connection.cursor()
+    cursor.execute(""" select vi.id, TO_CHAR(vi.creation_datetime, 'DD-MM-YYYY'),vi.inquiry_reference_no,
+                        us.buyer_vendor_name,  
+                        Case when vi.status = '1' then 'Open'
+                        when vi.status = '2' then 'Close'
+                        Else 'Confirm' End as status   
+                        from vendor_vendorinquiry vi
+                        left join auth_user au on vi.user_id = au.id
+                        left join users_staffuser us on us.user_id = au.id 
+                        order by vi.creation_datetime DESC   """)
+    quotation_list = cursor.fetchall() 
+
+    return render(request, 'admin/vendor/quotation/quotation_list.html',{
+        'quotation_list':quotation_list 
+    })
+
+@login_required(login_url='/users/login')
+def add_vendor_quotation(request): 
+    
+    cursor = connection.cursor()
+    cursor.execute(""" select vi.id, TO_CHAR(vi.creation_datetime, 'DD-MM-YYYY'),vi.inquiry_reference_no,
+                        us.buyer_vendor_name,  
+                        Case when vi.status = '1' then 'Open'
+                        when vi.status = '2' then 'Close'
+                        Else 'Confirm' End as status   
+                        from vendor_vendorinquiry vi
+                        left join auth_user au on vi.user_id = au.id
+                        left join users_staffuser us on us.user_id = au.id 
+                        order by vi.creation_datetime DESC   """)
+    quotation_list = cursor.fetchall() 
+
+    return render(request, 'admin/vendor/quotation/add_quotation.html',{
+        'quotation_list':quotation_list 
+    })
+
+csrf_exempt
+def get_buyer_email(request): 
+    if request.method == 'POST':
+        reference_no = request.POST.get('searchref') 
+        
+        buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+        staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id) 
+        email = BuyerEmails.objects.filter(buyer_id=staff_user.id) 
+        
+        return JsonResponse(serializers.serialize('json', email, fields=('email_list')), safe=False)
+
+@login_required(login_url='/users/login')
+def send_quotation(request):  
+    
+    today = datetime.datetime.now() 
+    
+    if request.is_ajax(): 
+        reference_no = request.POST.get('reference_no') 
+        quotation = request.POST.get('quotation')  
+        buyer_email_list = request.POST.getlist('to_email',"false")  
+        sub_total = request.POST.get('sub_total')
+        discount = request.POST.get('discount')  
+        total = request.POST.get('total')  
+        notes = request.POST.get('notes')  
+        email_to = request.POST.get('from_email') 
+
+
+        VendorInquiry.objects.create(inquiry_reference_no=reference_no,
+                                     quotation=quotation, sub_total=sub_total,
+                                     discount=discount,total_amount=total, 
+                                     notes=notes,user=request.user,status='3')
+        try:   
+            for buyer_email_list in buyer_email_list: 
+                html_content = render_to_string("admin/vendor/email/quotation_template.html", {'reference_no':reference_no, 
+                'date':today, 'quotation':quotation, 'sub_total':sub_total, 'discount':discount,
+                'total':total, 'notes':notes }) 
+                # text_content = strip_tags(html_content)
+                msg = EmailMultiAlternatives(subject="Quotation", from_email="operations@procurehero.com",
+                                to=[buyer_email_list], body=html_content)
+                msg.attach_alternative(html_content, "text/html")
+                msg.send() 
+                print("send mail") 
+     
+            message = "success"
+            return HttpResponse(message)
+        except: 
+            message = "error"
+            return HttpResponse(message)
+
+@login_required(login_url='/users/login')
+def view_vendor_inquiry(request, id):
+    cursor = connection.cursor()
+    cursor.execute(""" Select us.buyer_vendor_name,vi.inquiry_reference_no,TO_CHAR(vi.creation_datetime, 'DD-MM-YYYY'), 
+                        vi.quotation,vi.sub_total,vi.discount, vi.total_amount,vi.notes,vi.id from auth_user au
+                        left join vendor_vendorinquiry vi on vi.user_id = au.id
+                        left join users_staffuser us on us.user_id = au.id
+                        where vi.id = '""" + str(id) + """'   """)
+    vendor_quoatation_view = cursor.fetchall()
+    vendor_reference_no = VendorInquiry.objects.get(id=id) 
+    cursor.execute(""" select bbc.email_list from buyer_buyeremails bbc
+                        left join users_staffuser us on bbc.buyer_id = us.id
+                        left join auth_user au on au.id = us.user_id
+                        left join buyer_buyerinquiry bbi on bbi.user_id = au.id
+                        where bbi.reference_no = '""" + str(vendor_reference_no.inquiry_reference_no) + """'   """)
+    buyer_email = cursor.fetchall() 
+     
+    print(buyer_email)
+    return render(request, 'admin/vendor/quotation/view_quotation.html',{
+        'vendor_quoatation_view': vendor_quoatation_view, 
+        'buyer_email':buyer_email 
+    })
+
+@login_required(login_url='/users/login')
+def view_send_inquiry(request, id):
+    cursor = connection.cursor()
+    cursor.execute(""" Select us.buyer_vendor_name,vi.inquiry_reference_no,TO_CHAR(vi.creation_datetime, 'DD-MM-YYYY'), 
+                        vi.quotation,vi.sub_total,vi.discount, vi.total_amount,vi.notes,vi.id from auth_user au
+                        left join vendor_vendorinquiry vi on vi.user_id = au.id
+                        left join users_staffuser us on us.user_id = au.id
+                        where vi.id = '""" + str(id) + """'   """)
+    vendor_quoatation_view = cursor.fetchall()
+    vendor_reference_no = VendorInquiry.objects.get(id=id) 
+    cursor.execute(""" select bbc.email_list from buyer_buyeremails bbc
+                        left join users_staffuser us on bbc.buyer_id = us.id
+                        left join auth_user au on au.id = us.user_id
+                        left join buyer_buyerinquiry bbi on bbi.user_id = au.id
+                        where bbi.reference_no = '""" + str(vendor_reference_no.inquiry_reference_no) + """'   """)
+    buyer_email = cursor.fetchall() 
+     
+     
+    return render(request, 'admin/vendor/quotation/send_quotation.html',{
+        'vendor_quoatation_view': vendor_quoatation_view, 
+        'buyer_email':buyer_email 
+    })
+
+@login_required(login_url='/users/login')
+def send_quotation_to_buyer_email(request):  
+    
+    today = datetime.datetime.now() 
+    
+    if request.is_ajax():
+        id = request.POST.get('id')
+        reference_no = request.POST.get('reference_no')
+        date = request.POST.get('date')
+        quotation = request.POST.get('quotation')  
+        buyer_email_list = request.POST.getlist('buyer_emails',"false")  
+        sub_total = request.POST.get('sub_total')
+        discount = request.POST.get('discount')  
+        total = request.POST.get('total')  
+        notes = request.POST.get('notes')  
+        email_to = "operations@procurehero.com"
+        try:   
+            for buyer_email_list in buyer_email_list: 
+                html_content = render_to_string("admin/vendor/email/quotation_template.html", {'reference_no':reference_no, 
+                'date':date, 'quotation':quotation, 'sub_total':sub_total, 'discount':discount,
+                'total':total, 'notes':notes }) 
+                # text_content = strip_tags(html_content)
+                msg = EmailMultiAlternatives(subject="Quotation", from_email="operations@procurehero.com",
+                                to=[email_to], body=html_content)
+                msg.attach_alternative(html_content, "text/html")
+                msg.send() 
+                print("send mail") 
+
+            VendorInquiry.objects.filter(id=id).update(status=3)    
+            message = "success"
+            return HttpResponse(message)
+        except: 
+            message = "error"
+            return HttpResponse(message)
+
+
+@login_required(login_url='/users/login')
+def delete_vendor_quotation(request, id):
+    delete_quotation = VendorInquiry.objects.get(id=id)
+    delete_quotation.status =2
+    delete_quotation.save()
+      
+    return redirect('quotation_list')

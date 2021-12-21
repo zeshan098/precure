@@ -17,7 +17,7 @@ class VendorInquiry(models.Model):
     discount = models.CharField(max_length=200, null=True, blank=True)
     total_amount = models.CharField(max_length=200, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)  
-    creation_datetime = models.DateTimeField(auto_now_add=True)
+    creation_datetime = models.DateTimeField(auto_now_add=True) 
     status = models.CharField(max_length=20, null=True, blank=True, choices=STATUS)
   
     def __str__(self): 

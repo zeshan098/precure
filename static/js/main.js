@@ -579,7 +579,7 @@ $(document).ready(function (e) {
         {
             // view uploaded file.
             $(".sent-message").show();
-            //$("#vendor_form")[0].reset(); 
+            $("#vendor_form")[0].reset(); 
             // location.reload();
             }
 		 },
@@ -602,7 +602,134 @@ $(document).ready(function() {
         $.sum = function(){
             $("#total").val(parseInt($("#sub_total").val()) -     parseInt($("#discount").val()));
         } 
+        
 });
 
+function getdata()
+{
+  //  var reference_no = document.getElementById("inquiry_reference_no");
+  var reference_no = $('.inquiry_reference_no').val();
+  var sub_array = []; 
+   if(reference_no)
+   { 
+    $.ajax({
+      type: 'post',
+      url: '/vendor/get_category_tag/',
+      data: {
+        reference_no:reference_no,
+      },
+      success: function (response) {
+        var jsonData = JSON.parse(response);
+        console.log(jsonData)
+        for (var i = 0; i < jsonData.length; i++) {
+          var counter = jsonData[i];  
+          var category_name = counter.fields.category_name; 
+          
+          $('.caty>.bootstrap-tagsinput').append(`<span class="tag label label-info">${category_name}<span data-role="remove"></span></span>`); 
+          sub_array.push(category_name); 
+        }
+        $('#category_list').val(sub_array);
+        getmenufacturedata(reference_no);
+      }
+    });
+   }
+   else
+   {
+    $('#res').html("Enter Reference #");
+   }
+}
+
+
+
+function getmenufacturedata(reference_no)
+{
+  //  var reference_no = document.getElementById("inquiry_reference_no");
+  var reference_no = reference_no;
+  var sub_array = [];
+  console.log(reference_no);
+   if(reference_no)
+   { 
+    $.ajax({
+      type: 'post',
+      url: '/vendor/get_menufacture_tag/',
+      data: {
+        reference_no:reference_no,
+      },
+      success: function (response) {
+        var jsonData = JSON.parse(response);
+        console.log(jsonData)
+        for (var i = 0; i < jsonData.length; i++) {
+          var counter = jsonData[i];  
+          var menufacture_name = counter.fields.menufacture_name; 
+          sub_array.push(menufacture_name);
+          $('.manuf>.bootstrap-tagsinput').append(`<span class="tag label label-info">${menufacture_name}<span data-role="remove"></span></span>`); 
+        }
+        $('#menufactures_list').val(sub_array);
+        getmodeldata(reference_no);
+      }
+    });
+   }
+   else
+   {
+    $('#res').html("Enter Reference #");
+   }
+}
+
+function getmodeldata(reference_no)
+{
+  //  var reference_no = document.getElementById("inquiry_reference_no");
+  var reference_no = reference_no;
+  var sub_array = [];
+  console.log(reference_no);
+   if(reference_no)
+   { 
+    $.ajax({
+      type: 'post',
+      url: '/vendor/get_model_tag/',
+      data: {
+        reference_no:reference_no,
+      },
+      success: function (response) {
+        var jsonData = JSON.parse(response);
+        console.log(jsonData)
+        for (var i = 0; i < jsonData.length; i++) {
+          var counter = jsonData[i];  
+          var model_name = counter.fields.model_name; 
+          sub_array.push(model_name);
+          $('.models>.bootstrap-tagsinput').append(`<span class="tag label label-info">${model_name}<span data-role="remove"></span></span>`); 
+        }
+        $('#models_list').val(sub_array);
+        //  $('#res').html(response);
+      }
+    });
+   }
+   else
+   {
+    $('#res').html("Enter Reference #");
+   }
+}
+
+
+
+$(function () {
+  $(document).on('click', '.btn-add', function (e) {
+      e.preventDefault();
+
+      var controlForm = $('.controls:first'),
+          currentEntry = $(this).parents('.entry:first'),
+          newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+      newEntry.find('input').val('');
+      controlForm.find('.entry:not(:last) .btn-add')
+          .removeClass('btn-add').addClass('btn-remove')
+          .removeClass('btn-success').addClass('btn-danger')
+          .html('<span class="fa fa-trash"></span>');
+  }).on('click', '.btn-remove', function (e) {
+      $(this).parents('.entry:first').remove();
+
+      e.preventDefault();
+      return false;
+  });
+});
 
 
