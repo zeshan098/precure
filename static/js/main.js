@@ -350,23 +350,36 @@ $(function () {
 
 })
 
+ 
 function runSuggestions(element,query) {
 
   /*
   using ajax to populate suggestions
    */
+  
   let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
-  $.getJSON("http://127.0.0.1:8000/buyer/buyer_category/", function( data ) {
+  var token = $('input[name="csrfmiddlewaretoken"]').prop('value');  
+  $.ajax({
+		type: "POST",
+		url: "/buyer/buyer_category/",
+		data:{'csrfmiddlewaretoken':token, 'keyword':query}, 
+		beforeSend: function(){
+			$("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
       _tag_input_suggestions_data = data;
-      $.each(data,function (key,value) {
-          let template = $("<div>"+value.name+"</div>").hide()
-          sug_area.append(template)
-          template.show()
+			$.each(data,function (key,value) {
+        let template = $("<div>"+value.name+"</div>").hide()
+        sug_area.append(template)
+        template.show()
 
-      })
-  });
+    })
+		}
+		});
+ 
 
 }
+ 
 
 function runSuggestions_menufatcure(element,query) {
 
@@ -374,15 +387,25 @@ function runSuggestions_menufatcure(element,query) {
   using ajax to populate suggestions
    */
   let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
-  $.getJSON("http://127.0.0.1:8000/buyer/buyer_menufacture/", function( data ) {
+  var token = $('input[name="csrfmiddlewaretoken"]').prop('value'); 
+  $.ajax({
+		type: "POST",
+		url: "/buyer/buyer_menufacture/",
+		data:{'csrfmiddlewaretoken':token, 'keyword':query}, 
+		beforeSend: function(){
+			$("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
       _tag_input_suggestions_data = data;
-      $.each(data,function (key,value) {
-          let template = $("<div>"+value.name+"</div>").hide()
-          sug_area.append(template)
-          template.show()
+			$.each(data,function (key,value) {
+        let template = $("<div>"+value.name+"</div>").hide()
+        sug_area.append(template)
+        template.show()
 
-      })
-  });
+    })
+		}
+		});
+  
 
 }
 
@@ -392,17 +415,46 @@ function runSuggestions_model(element,query) {
   using ajax to populate suggestions
    */
   let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
-  $.getJSON("http://127.0.0.1:8000/buyer/buyer_model/", function( data ) {
+  var token = $('input[name="csrfmiddlewaretoken"]').prop('value'); 
+  $.ajax({
+		type: "POST",
+		url: "/buyer/buyer_model/",
+		data:{'csrfmiddlewaretoken':token, 'keyword':query}, 
+		beforeSend: function(){
+			$("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
       _tag_input_suggestions_data = data;
-      $.each(data,function (key,value) {
-          let template = $("<div>"+value.name+"</div>").hide()
-          sug_area.append(template)
-          template.show()
+			$.each(data,function (key,value) {
+        let template = $("<div>"+value.name+"</div>").hide()
+        sug_area.append(template)
+        template.show()
 
-      })
-  });
-
+    })
+		}
+		});
+  
+    
 }
+
+
+// function runSuggestions_email(element,query) {
+
+//   /*
+//   using ajax to populate suggestions
+//    */
+//   let sug_area=$(element).parents().eq(2).find('.autocomplete .autocomplete-items');
+//   $.getJSON("/static/js/data.json", function( data ) {
+//       _tag_input_suggestions_data = data;
+//       $.each(data,function (key,value) {
+//           let template = $("<div>"+value.name+"</div>").hide()
+//           sug_area.append(template)
+//           template.show()
+
+//       })
+//   });
+// }
+ 
 /**
    * Initiate TinyMCE Editor
    */
@@ -526,8 +578,9 @@ function runSuggestions_model(element,query) {
  
 //buyer Form
 $(document).ready(function (e) {
-	$("#buyer_form").on('submit',(function(e) {
+	$("#buyer_form").on('submit',(function(e) { 
 	 e.preventDefault();
+   $("body").addClass("loading");
 	 $.ajax({
 	 url: '/buyer/buyer_inquiry_form/',
 	  type: "POST",
@@ -546,6 +599,7 @@ $(document).ready(function (e) {
 	   else
         {
             // view uploaded file.
+            $("body").removeClass("loading"); 
             $(".sent-message").show();
             $("#buyer_form")[0].reset(); 
             // location.reload();
@@ -560,6 +614,7 @@ $(document).ready(function (e) {
 $(document).ready(function (e) {
 	$("#vendor_form").on('submit',(function(e) {
 	 e.preventDefault();
+   $("body").addClass("loading");
 	 $.ajax({
 	 url: '/vendor/vendor_inquiry_form/',
 	  type: "POST",
@@ -578,6 +633,7 @@ $(document).ready(function (e) {
 	   else
         {
             // view uploaded file.
+            $("body").removeClass("loading"); 
             $(".sent-message").show();
             $("#vendor_form")[0].reset(); 
             // location.reload();
@@ -605,8 +661,24 @@ $(document).ready(function() {
         
 });
 
-function getdata()
-{
+$(".tags-input-model input").on( "keyup", function(event) {
+  var query=$(this).val()
+
+  if(event.which == 8) {
+      if(query==""){
+          console.log("Clearing suggestions");
+          $('.tags-input .autocomplete-items').html('');
+          return;
+      }
+  }
+
+  $('.tags-input-model .autocomplete-items').html('');
+  runSuggestions_model($(this),query)
+
+});
+
+$(function(){
+  $(".inquiry_reference_no").bind('input',function(e) {
   //  var reference_no = document.getElementById("inquiry_reference_no");
   var reference_no = $('.inquiry_reference_no').val();
   var sub_array = []; 
@@ -624,21 +696,23 @@ function getdata()
         for (var i = 0; i < jsonData.length; i++) {
           var counter = jsonData[i];  
           var category_name = counter.fields.category_name; 
-          
-          $('.caty>.bootstrap-tagsinput').append(`<span class="tag label label-info">${category_name}<span data-role="remove"></span></span>`); 
+          $('.tag_space').remove();
+          $('.caty>.bootstrap-tagsinput').append(`<span class="tag label label-info">${category_name}<span data-role="remove"></span></span><input type="text" class="tag_space1" placeholder=" " size="1">`); 
+          // $('.tag_space').show();
           sub_array.push(category_name); 
         }
         $('#category_list').val(sub_array);
-        getmenufacturedata(reference_no);
       }
     });
+    
+    getmenufacturedata(reference_no);
    }
    else
    {
     $('#res').html("Enter Reference #");
    }
-}
-
+  });
+});
 
 
 function getmenufacturedata(reference_no)
@@ -662,12 +736,15 @@ function getmenufacturedata(reference_no)
           var counter = jsonData[i];  
           var menufacture_name = counter.fields.menufacture_name; 
           sub_array.push(menufacture_name);
-          $('.manuf>.bootstrap-tagsinput').append(`<span class="tag label label-info">${menufacture_name}<span data-role="remove"></span></span>`); 
+          $('.tag_space').remove(); 
+          $('.manuf>.bootstrap-tagsinput').append(`<span class="tag label label-info">${menufacture_name}<span data-role="remove"></span></span><input type="text" class="tag_space2" placeholder=" " size="1">`); 
+          // $('.tag_space').show();       
         }
         $('#menufactures_list').val(sub_array);
-        getmodeldata(reference_no);
       }
     });
+    
+    getmodeldata(reference_no);
    }
    else
    {
@@ -696,10 +773,17 @@ function getmodeldata(reference_no)
           var counter = jsonData[i];  
           var model_name = counter.fields.model_name; 
           sub_array.push(model_name);
-          $('.models>.bootstrap-tagsinput').append(`<span class="tag label label-info">${model_name}<span data-role="remove"></span></span>`); 
+          $('.tag_space').remove();
+          $('.models>.bootstrap-tagsinput').append(`<span class="tag label label-info">${model_name}<span data-role="remove"></span></span><input type="text" class="tag_space3" placeholder=" " size="1">`); 
+             
+          $('.tag_space1').remove(); 
+          $('.tag_space2').remove(); 
+          $('.tag_space3').remove();  
+          
         }
         $('#models_list').val(sub_array);
-        //  $('#res').html(response);
+        $('.bootstrap-tagsinput').append(`<input type="text" class="tag_space" placeholder=" " size="1"></input>`);   
+        $('.bootstrap-tagsinput').find('[autofocus]').focus();
       }
     });
    }
@@ -733,3 +817,4 @@ $(function () {
 });
 
 
+ 

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'multi_email_field',
     'buyer',
     'pages', 
-    'vendor',  
+    'vendor',
+    'order',  
 ]
 
 MIDDLEWARE = [
@@ -143,5 +144,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'AKIAQ2UUTETCPUNCDHPJ'
 EMAIL_HOST_PASSWORD = 'BMasVF97ZfdI9OAeHMB+azwixUDeAFWF3YP6alUUiGRU'
 EMAIL_USE_TLS = True
-
  

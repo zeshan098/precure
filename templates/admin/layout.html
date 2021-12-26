@@ -173,8 +173,23 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
+            <a href="/buyer/add_buyer_inquiry">
+              <i class="bi bi-circle"></i><span>Add Buyer Inquiry</span>
+            </a>
+          </li> 
+          <li>
             <a href="/buyer/buyer_inquiry_list">
               <i class="bi bi-circle"></i><span>Buyer Inquiry</span>
+            </a>
+          </li> 
+          <li>
+            <a href="/buyer/create_buyer_po">
+              <i class="bi bi-circle"></i><span>Buyer PO</span>
+            </a>
+          </li>
+          <li>
+            <a href="/buyer/buyer_po_list">
+              <i class="bi bi-circle"></i><span>PO List</span>
             </a>
           </li> 
         </ul>
@@ -194,6 +209,35 @@
               <i class="bi bi-circle"></i><span>Add Quotation</span>
             </a>
           </li>
+          <li>
+            <a href="/vendor/create_vendor_po">
+              <i class="bi bi-circle"></i><span>Vendor PO</span>
+            </a>
+          </li>
+          <li>
+            <a href="/vendor/vendor_po_list">
+              <i class="bi bi-circle"></i><span>PO List</span>
+            </a>
+          </li>
+        </ul>
+      </li> 
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#order-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Order</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="order-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="/order/order_list">
+              <i class="bi bi-circle"></i><span>Order List</span>
+            </a>
+          </li> 
+          <li>
+            <a href="/order/create_order">
+              <i class="bi bi-circle"></i><span>Create Order</span>
+            </a>
+          </li>
+           
         </ul>
       </li> 
 
@@ -208,6 +252,7 @@
     {% block footer_content %}
     <footer id="footer" class="footer">
          
+  <div class="overlay"></div>
       </footer><!-- End Footer -->
       {% endblock %}
       <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

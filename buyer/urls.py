@@ -43,6 +43,14 @@ urlpatterns = [
     #Delete Buyer Inquiry
     path('delete_buyer_inquiry/<int:id>/', views.delete_buyer_inquiry, name='delete_buyer_inquiry'),
 
+    #Buyer Inquery form from admin side
+    path('add_buyer_inquiry/', views.add_buyer_inquiry, name='add_buyer_inquiry'),  
+
+    #Purchase Order For Buyer
+    path('create_buyer_po/', views.create_buyer_po, name='create_buyer_po'), 
+    path('get_buyer_email/', views.get_buyer_email, name='get_buyer_email'),
+    path('buyer_po_list/', views.buyer_po_list, name='buyer_po_list'),  
+
     path('sendSimpleEmail/<emailto>/', views.sendSimpleEmail, name='sendSimpleEmail'), 
 ]
 

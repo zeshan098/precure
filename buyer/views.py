@@ -8,6 +8,7 @@ from random import choice
 from string import ascii_lowercase, digits
 from django.db import connection 
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage  
 from django.core.files.storage import FileSystemStorage
 from django.template.loader import render_to_string 
@@ -15,7 +16,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User as DjangoUser 
 from users.models import StaffUser as User, StaffUser 
 from buyer.models import BuyerInquiry, BuyerAttachment, BuyerCategories, BuyerMenufactures, BuyerEmails, BuyerModels, \
-                          BuyerInquiryToVendor
+                          BuyerInquiryToVendor, BuyerPO
 from django.contrib.auth.decorators import login_required
 
 def sendSimpleEmail(request,emailto):
@@ -31,8 +32,10 @@ def buyer_inquiry(request):
     return render(request, 'web/buyer_inquiry.html',{})
 
 def buyer_category(request):  
+    keyword = request.POST.get('keyword')
     cursor = connection.cursor()
-    cursor.execute(""" select DISTINCT category_name  from vendor_categories  where status = '1'   """)
+    cursor.execute(""" select DISTINCT category_name  from vendor_categories  where status = '1'
+                        and  category_name LIKE '%""" + keyword + """%'   """)
     pro_types = cursor.fetchall()
     list = []
     for obj in pro_types:
@@ -40,8 +43,10 @@ def buyer_category(request):
     return JsonResponse(list, safe=False)
 
 def buyer_menufacture(request):  
+    keyword = request.POST.get('keyword')
     cursor = connection.cursor()
-    cursor.execute(""" select DISTINCT menufacture_name  from vendor_menufactures where status = '1'   """)
+    cursor.execute(""" select DISTINCT menufacture_name  from vendor_menufactures where status = '1'  
+                       and  menufacture_name LIKE '%""" + keyword + """%' """)
     pro_types = cursor.fetchall()
     list = []
     for obj in pro_types:
@@ -49,8 +54,10 @@ def buyer_menufacture(request):
     return JsonResponse(list, safe=False)
 
 def buyer_model(request):  
+    keyword = request.POST.get('keyword')
     cursor = connection.cursor()
-    cursor.execute(""" select DISTINCT model_name  from vendor_vendormodels  where status = '1'   """)
+    cursor.execute(""" select DISTINCT model_name  from vendor_vendormodels  where status = '1' 
+                        and  model_name LIKE '%""" + keyword + """%'  """)
     pro_types = cursor.fetchall()
     list = []
     for obj in pro_types:
@@ -87,23 +94,20 @@ def buyer_inquiry_form(request):
         location = request.POST.get('location') 
         myfile = request.FILES.getlist('file')
         email_to = "operations@procurehero.com"
-        # print(category)
+        ref_no = f'{today:%S%M%H%d%m%Y}'
+        # print(category_list)
 
         user = DjangoUser.objects.create( email="precure@gmail.com", username="procureher" + str(generated_username))
         this_user = User.objects.create(user=user,buyer_vendor_name=buyer_vendor_name,role="buyer",status='1',
                                          company_name=company_name, phone_no=phone_no,
                                           alt_phone_no=alt_phone_no, location=location)
        
-        buyerinfo = BuyerInquiry.objects.create(reference_no= f'{today:%S%M%H%d%m%Y}',inquiry_type=inquiry_type,inquires=inquiry_des,
-                                                user=user,status='1', created_by=user,updated_by=user)
+        buyerinfo = BuyerInquiry.objects.create(reference_no= ref_no,inquiry_type=inquiry_type,inquires=inquiry_des,
+                                                user=user,status='1', created_by=user.id,updated_by=user.id)
         for f in myfile: 
             BuyerAttachment.objects.create(buyerinq=buyerinfo,status='1', attachment_file=f )
-
-        # cat_list = category.split (",")  
-        # menufacture_list = menufacture.split (",")  
-        # model_list = model.split (",")  
-        # emails_list = email.split (",")
-
+ 
+        
         for cat in  category_list: 
             # cat_list = cat.split (",") 
             try:  
@@ -167,7 +171,7 @@ def buyer_inquiry_form(request):
                 msg.attach_file('media/'+f.name) 
             msg.send() 
              
-            send_mail("Thank You", "Thank You For Query", "operations@procurehero.com", [email])
+            send_mail("Thank You", "Thank You For Query. This is Your Reference #:"+ ref_no, "operations@procurehero.com", [email])
             BuyerInquiryToVendor.objects.create(inquiry_id=str(buyerinfo.id),quotes_received=0,no_of_vendor_send=0)
             
             print("send mail")         
@@ -587,7 +591,8 @@ def view_buyer_inquiry(request, id):
 def edit_buyer_inquiry(request, id):
     cursor = connection.cursor()
     cursor.execute(""" Select bi.id, us.buyer_vendor_name, us.company_name,us.phone_no, us.alt_phone_no,
-                        bi.inquiry_type, bi.inquires, us.location, us.id,bi.reference_no from auth_user au
+                        bi.inquiry_type, bi.inquires, us.location, us.id,bi.reference_no,
+                        bi.status from auth_user au
                         left join buyer_buyerinquiry bi on bi.user_id = au.id
                         left join users_staffuser us on us.user_id = au.id
                         where bi.id = '""" + str(id) + """'   """)
@@ -697,7 +702,8 @@ def update_buyer_inquiry(request, inquiry_id):
         alt_phone_no = request.POST.get('alt_phone_no')
         inquiry_type = request.POST.get('inquiry_type')
         inquiry_des = request.POST.get('inquires') 
-        location = request.POST.get('location')   
+        location = request.POST.get('location')    
+        status = request.POST.get('status') 
         try:   
             buyer_info = BuyerInquiry.objects.get(id=inquiry_id)  
             update_buyer_info = StaffUser.objects.filter(user_id=buyer_info.user_id) 
@@ -705,7 +711,7 @@ def update_buyer_inquiry(request, inquiry_id):
                                 company_name=company_name, phone_no=phone_no, alt_phone_no=alt_phone_no, 
                                  location=location  )
             inquiry_update = BuyerInquiry.objects.filter(id=inquiry_id).update(inquiry_type=inquiry_type, 
-                                inquires=inquiry_des,  updated_by=request.user.id, update_datetime=today)
+                                inquires=inquiry_des,  updated_by=request.user.id, update_datetime=today, status=status)
             message = "success"
             return HttpResponse(message)
         except: 
@@ -719,35 +725,40 @@ def view_send_buyer_inquiry(request, inquiry_id):
                         bi.inquiry_type, bi.inquires, us.location, us.id,bi.reference_no from auth_user au
                         left join buyer_buyerinquiry bi on bi.user_id = au.id
                         left join users_staffuser us on us.user_id = au.id
-                        where bi.id = '""" + str(inquiry_id) + """'   """)
+                        where bi.id = '""" + str(inquiry_id) + """'    """)
     buyer_inquiry_view = cursor.fetchall()
     cursor.execute(""" select bbc.id,bbc.category_name from buyer_buyercategories bbc
                         left join users_staffuser us on bbc.buyer_id = us.id
                         left join auth_user au on au.id = us.user_id
                         left join buyer_buyerinquiry bbi on bbi.user_id = au.id
-                        where bbi.id = '""" + str(inquiry_id) + """'   """)
+                        where bbi.id = '""" + str(inquiry_id) + """'
+                        and bbc.status = '1'   """)
     buyer_category = cursor.fetchall() 
     cursor.execute(""" select bbc.id,bbc.menufacture_name from buyer_buyermenufactures bbc
                         left join users_staffuser us on bbc.buyer_id = us.id
                         left join auth_user au on au.id = us.user_id
                         left join buyer_buyerinquiry bbi on bbi.user_id = au.id
-                        where bbi.id = '""" + str(inquiry_id) + """'   """)
+                        where bbi.id = '""" + str(inquiry_id) + """'
+                        and bbc.status = '1'   """)
     buyer_menufacture = cursor.fetchall() 
     cursor.execute(""" select bbc.id, bbc.model_name from buyer_buyermodels bbc
                         left join users_staffuser us on bbc.buyer_id = us.id
                         left join auth_user au on au.id = us.user_id
                         left join buyer_buyerinquiry bbi on bbi.user_id = au.id
-                        where bbi.id = '""" + str(inquiry_id) + """'   """)
+                        where bbi.id = '""" + str(inquiry_id) + """'
+                        and bbc.status = '1'   """)
     buyer_model = cursor.fetchall()  
     cursor.execute(""" select bbc.id,bbc.email_list from buyer_buyeremails bbc
                         left join users_staffuser us on bbc.buyer_id = us.id
                         left join auth_user au on au.id = us.user_id
                         left join buyer_buyerinquiry bbi on bbi.user_id = au.id
-                        where bbi.id = '""" + str(inquiry_id) + """'   """)
+                        where bbi.id = '""" + str(inquiry_id) + """'
+                        and bbc.status = '1'   """)
     buyer_email = cursor.fetchall() 
     cursor.execute(""" select bbc.attachment_file from buyer_buyerattachment bbc 
                        left join buyer_buyerinquiry bbi on bbc.buyerinq_id = bbi.id
-                        where bbi.id = '""" + str(inquiry_id) + """'   """)
+                        where bbi.id = '""" + str(inquiry_id) + """'
+                        and bbc.status = '1'   """)
     buyer_attachment = cursor.fetchall()
     bbc = [('1')]
     bmc = [('1')]
@@ -842,7 +853,8 @@ def send_buyer_inquiry_to_vendor(request):
                 msg.send()   
                  
                 print("send mail")
-                a +=1 
+                for v in vendor_email_list:
+                    a +=1 
 
                 inquiry_update = BuyerInquiry.objects.filter(id=inquiry_id).update(status=2)
                 BuyerInquiryToVendor.objects.filter(inquiry_id=inquiry_id).update(no_of_vendor_send=a)
@@ -859,3 +871,184 @@ def delete_buyer_inquiry(request, id):
     delete_buyer.save()
       
     return redirect('buyer_inquiry_list')
+
+@login_required(login_url='/users/login')
+def add_buyer_inquiry(request): 
+    generated_username = generate_random_username()
+    today = datetime.datetime.now()  
+    if request.is_ajax():
+        buyer_vendor_name = request.POST.get('buyer_vendor_name')
+        company_name = request.POST.get('company_name')
+        email = request.POST.get('emails')
+        phone_no = request.POST.get('phone_no')
+        alt_phone_no = request.POST.get('alt_phone_no')
+        inquiry_type = request.POST.get('inquiry_type')
+        inquiry_des = request.POST.get('inquires')
+        category_list = request.POST.get('category')
+        menufacture_list = request.POST.get('menufacture') 
+        model_list = request.POST.get('model') 
+        location = request.POST.get('location') 
+        myfile = request.FILES.getlist('file')
+        email_to = "operations@procurehero.com"
+        ref_no = f'{today:%S%M%H%d%m%Y}'
+        # print(category_list)
+
+        user = DjangoUser.objects.create( email="precure@gmail.com", username="procureher" + str(generated_username))
+        this_user = User.objects.create(user=user,buyer_vendor_name=buyer_vendor_name,role="buyer",status='1',
+                                         company_name=company_name, phone_no=phone_no,
+                                          alt_phone_no=alt_phone_no, location=location)
+       
+        buyerinfo = BuyerInquiry.objects.create(reference_no= ref_no,inquiry_type=inquiry_type,inquires=inquiry_des,
+                                                user=user,status='1', created_by=user.id,updated_by=user.id)
+        for f in myfile: 
+            BuyerAttachment.objects.create(buyerinq=buyerinfo,status='1', attachment_file=f )
+ 
+        cat_list = category_list.split (",")  
+        menufacture_list = menufacture_list.split (",")  
+        model_list = model_list.split (",")  
+        emails_list = email.split (",")
+        for cat in  cat_list: 
+            # cat_list = cat.split (",") 
+            try:  
+                cats = BuyerCategories()
+                cats.buyer=this_user
+                cats.category_name=cat
+                cats.status='1'
+                cats.save() 
+                print("category Saved")
+            except:
+                print("not save")
+                
+        for menufacture in  menufacture_list: 
+            
+            # menufacture_list = menufacture.split (",") 
+            try:  
+                menufacture_lists = BuyerMenufactures()
+                menufacture_lists.buyer=this_user
+                menufacture_lists.menufacture_name=menufacture
+                menufacture_lists.status='1'
+                menufacture_lists.save() 
+                print("menufacture Saved")
+            except:
+                print("not save")
+
+        for model in  model_list:
+            
+            # model_list = model.split (",")   
+            try:  
+                b_model = BuyerModels()
+                b_model.buyer=this_user
+                b_model.model_name=model
+                b_model.status='1'
+                b_model.save() 
+                print("model_name Saved")
+            except:
+                print("not save")
+
+
+        for email in  emails_list: 
+            # emails_list = email.split (",")
+            try:  
+                emails = BuyerEmails()
+                emails.buyer=this_user
+                emails.email_list=email
+                emails.status='1'
+                emails.save() 
+                print("email_list Saved")
+            except:
+                print("not save")
+        
+        try:
+            BuyerInquiryToVendor.objects.create(inquiry_id=str(buyerinfo.id),quotes_received=0,no_of_vendor_send=0)
+        except:
+            print("BuyerInquiryToVendor not added")
+        # try:
+        #     print(email)  
+        #     html_content = render_to_string("web/email/buyer_inquiry_email.html", {'inquiry_des':inquiry_des, 
+        #     'inquiry_type':inquiry_type, 'category_tag':category_list, 'manufacture_tag':menufacture_list,
+        #     'model':model_list, 'location':location}) 
+        #     # text_content = strip_tags(html_content) 
+        #     msg = EmailMessage("Inquiry Form",html_content,"operations@procurehero.com",[email_to])
+        #     msg.content_subtype = 'html'
+        #     for f in myfile:   
+        #         msg.attach_file('media/'+f.name) 
+        #     msg.send() 
+             
+        #     send_mail("Thank You", "Thank You For Query. This is Your Reference #:"+ ref_no, "operations@procurehero.com", [email])
+        #     BuyerInquiryToVendor.objects.create(inquiry_id=str(buyerinfo.id),quotes_received=0,no_of_vendor_send=0)
+            
+        #     print("send mail")         
+        # except:
+        #     print("email not send")
+
+        message = "success"
+        return HttpResponse(message)
+    # else:
+    #     message = "error"
+    #     return HttpResponse(message)
+
+    return render(request, 'admin/buyer/inquiry/add_buyer_inquiry.html',{
+        
+    })
+
+@login_required(login_url='/users/login')
+def create_buyer_po(request):
+    
+    today = datetime.datetime.now() 
+    
+    if request.is_ajax(): 
+        reference_no = request.POST.get('reference_no') 
+        buyer_email_list = request.POST.getlist('buyer_emails',"false")  
+        to_email = request.POST.get('to_email') 
+        quotation = request.POST.get('quotation')   
+        sub_total = request.POST.get('sub_total')
+        discount = request.POST.get('discount')  
+        total = request.POST.get('total')  
+        notes = request.POST.get('notes')  
+        myfile = request.FILES['file'] 
+        
+        buyer_po = BuyerPO.objects.create(reference_no=reference_no,
+                                     quotation=quotation, sub_total=sub_total,
+                                     discount=discount,total_amount=total, 
+                                     notes=notes,created_by=request.user.id,updated_by=request.user.id,
+                                     attachment_file=myfile,
+                                     status='1')
+        
+        html_content = render_to_string("admin/buyer/email/buyer_po_email.html", {'ref_no':reference_no, 
+                'quotation':quotation,  'sub_total':sub_total, 'discount': discount, 'total':total,
+                'notes':notes }) 
+        msg = EmailMessage("Quotation Form",html_content,"operations@procurehero.com",buyer_email_list)
+        msg.content_subtype = 'html'    
+        msg.attach_file('media/'+myfile.name) 
+        msg.send()  
+
+        message = "success"
+        return HttpResponse(message)
+     
+        
+    return render(request, 'admin/buyer/purchase_order/create_po.html',{
+        
+    })
+
+def buyer_po_list(request): 
+    
+    cursor = connection.cursor()
+    cursor.execute(""" select bpo.id,bpo.reference_no,  TO_CHAR(bpo.creation_datetime, 'DD-MM-YYYY') 
+                        from buyer_buyerpo bpo 
+                        order by bpo.creation_datetime DESC   """)
+    po_list = cursor.fetchall() 
+
+    return render(request, 'admin/buyer/purchase_order/po_list.html',{
+        'po_list':po_list 
+    })
+
+csrf_exempt
+def get_buyer_email(request): 
+    if request.method == 'POST':
+        reference_no = request.POST.get('searchref') 
+        
+        vendor_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no, status='3') 
+        staff_user = StaffUser.objects.get(user_id=vendor_inquiry_record.user_id) 
+        email = BuyerEmails.objects.filter(buyer_id=staff_user.id) 
+         
+        return JsonResponse(serializers.serialize('json', email, fields=('email_list')), safe=False)

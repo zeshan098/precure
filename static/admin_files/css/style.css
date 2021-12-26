@@ -1115,3 +1115,21 @@ h1, h2, h3, h4, h5, h6 {
 .alert-danger1{
   display: none;
 }
+
+.overlay{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: rgb(255 255 255 / 75%) url("../img/loading.gif") no-repeat center center;
+}
+body.loading{
+  overflow: hidden;   
+}
+/* Make spinner image visible when body element has the loading class */
+body.loading .overlay{
+  display: block;
+}

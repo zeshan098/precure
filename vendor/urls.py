@@ -10,6 +10,7 @@ urlpatterns = [
     path('get_menufacture_tag/', views.get_menufacture_tag, name='get_menufacture_tag'),
     path('get_model_tag/', views.get_model_tag, name='get_model_tag'),
     path('vendor_inquiry_form/', views.vendor_inquiry_form, name='vendor_inquiry_form'), 
+    
     path('vendor_list/', views.vendor_list, name='vendor_list'),
     path('add_vendor/', views.add_edit_vendor, name='add_new_vendor'),  
     path('edit_vendor/<int:vendor_id>/', views.add_edit_vendor, name='edit_vendor'), 
@@ -30,14 +31,21 @@ urlpatterns = [
 
     # Vendor Quotation Pages Admin Side
     path('quotation_list/', views.quotation_list, name='quotation_list'),
-    path('add_vendor_quotation/', views.add_vendor_quotation, name='add_vendor_quotation'),
+    path('add_vendor_quotation/', views.add_vendor_quotation, name='add_vendor_quotation'), 
     path('get_buyer_email/', views.get_buyer_email, name='get_buyer_email'), 
     path('send_quotation/', views.send_quotation, name='send_quotation'), 
 
     path('view_vendor_inquiry/<int:id>/', views.view_vendor_inquiry, name='view_vendor_inquiry'),
     path('view_send_inquiry/<int:id>/', views.view_send_inquiry, name='view_send_inquiry'),
+    path('view_edit_inquiry/<int:id>/', views.view_edit_inquiry, name='view_edit_inquiry'),
+    path('update_send_inquiry/', views.update_send_inquiry, name='update_send_inquiry'),
     path('send_quotation_to_buyer_email/', views.send_quotation_to_buyer_email, name='send_quotation_to_buyer_email'), 
     path('delete_vendor_quotation/<int:id>/', views.delete_vendor_quotation, name='delete_vendor_quotation'),
+
+    #Purchase Order For Vendor
+    path('create_vendor_po/', views.create_vendor_po, name='create_vendor_po'), 
+    path('get_vendor_email/', views.get_vendor_email, name='get_vendor_email'),
+    path('vendor_po_list/', views.vendor_po_list, name='vendor_po_list'),  
 ]
 
 if settings.DEBUG:

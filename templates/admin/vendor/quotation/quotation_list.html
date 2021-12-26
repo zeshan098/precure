@@ -40,7 +40,8 @@
                             <td>{{quotation_list.2}}</td>
                             <td>{{quotation_list.3}}</td>
                             <td>{{quotation_list.4}}</td>   
-                            <td><a href="{% url 'view_vendor_inquiry' quotation_list.0 %}"><i class="bi bi-eye-fill"></i></a>  
+                            <td><a href="{% url 'view_vendor_inquiry' quotation_list.0 %}"><i class="bi bi-eye-fill"></i></a> 
+                              <a href="{% url 'view_edit_inquiry' quotation_list.0 %}"><i class="ri-edit-2-fill"></i></a> 
                               <a href="{% url 'view_send_inquiry' quotation_list.0 %}"><i class="ri-mail-send-fill"></i></a>
                               <a href="{% url 'delete_vendor_quotation' quotation_list.0 %}"><i class="ri-delete-bin-2-fill"></i></a> </td>
                         </tr>

@@ -267,7 +267,20 @@
                       <a data-id="{{ buyer_inquiry_view.0 }}"  data-bs-toggle="modal" data-bs-target="#basic_add_image_model" class="btn btn-primary buyer_update_image_model">Add</a>
                     </div>
                   </div>
-                  
+                  <div class="row mb-3">
+                    <label for="inputNumber" class="col-sm-2 col-form-label">Status</label>
+                    <div class="col-sm-10">
+                        <select class="form-select" name="status" aria-label="Default select example">
+                            <option selected>Select Sttus</option>
+                            <option value="1" {% if buyer_inquiry_view.10|slugify == '1'|slugify %}selected{% endif %}>Received</option>
+                            <option value="2" {% if buyer_inquiry_view.10|slugify == '2'|slugify  %}selected{% endif %}>Sourcing</option> 
+                            <option value="3" {% if buyer_inquiry_view.10|slugify == '3'|slugify  %}selected{% endif %}>Submitted</option> 
+                            <option value="4" {% if buyer_inquiry_view.10|slugify == '4'|slugify  %}selected{% endif %}>Won</option> 
+                            <option value="5" {% if buyer_inquiry_view.10|slugify == '5'|slugify  %}selected{% endif %}>Lost</option> 
+                            <option value="6" {% if buyer_inquiry_view.10|slugify == '6'|slugify  %}selected{% endif %}>Close</option> 
+                        </select>
+                    </div>
+                </div>
                    
   
                   <div class="row mb-3">

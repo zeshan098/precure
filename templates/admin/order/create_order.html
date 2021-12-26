@@ -1,0 +1,125 @@
+{% extends 'admin/layout.html' %}
+  {% load static %}  
+  {% block content %} 
+  
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Proforma/Commerical/Final Invoice</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/users/dashboard/">Home</a></li>
+          <li class="breadcrumb-item active">Quotation</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> </h5>
+  
+                <!-- General Form Elements -->
+                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                    Successfully Send Email
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                    Somthing Wrong!!
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <form action="" method="post" role="form" id="create_order"  enctype="multipart/form-data">
+                    {% csrf_token %} 
+                    <div class="row mb-3">
+                      <label for="inputText" class="col-sm-2 col-form-label">Reference #</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="reference_no" class="form-control reference_no" id="reference_no" value="">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">From</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="from_email" class="form-control" id="from_email" value="operations@procurehero.com">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputPassword" class="col-sm-2 col-form-label">To</label>
+                      <div class="col-sm-10">
+                        <table class="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th scope="col">Select</th>
+                              <th scope="col">Email</th> 
+                            </tr>
+                          </thead>
+                          <tbody id="exampleid"> 
+                             
+                          </tbody>
+                        </table>
+                        
+                         
+                      </div>
+                    </div>
+                    <!-- <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Date</label>
+                        <div class="col-sm-10">
+                            <input type="date" name="date" class="form-control" id="date" value="">
+                        </div>
+                    </div> -->
+                     
+                    <div class="row mb-3">
+                        <label for="inputNumber" class="col-sm-2 col-form-label">Quotation</label>
+                        <div class="col-sm-10">
+                            <textarea id="html" name="quotation" cols="100" rows="10" class="tinymce-editor form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Subtotal</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="sub_total" class="form-control" id="sub_total" value="0">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Discount</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="discount" class="form-control" id="discount" value="0">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Total</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="total" class="form-control" id="total" value="0">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputText" class="col-sm-2 col-form-label">Notes</label>
+                        <div class="col-sm-10">
+                            <textarea id="html" name="notes" cols="100" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+                  
+                   
+  
+                  <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Submit Button</label>
+                    <div class="col-sm-10">
+                      <button type="submit" class="btn btn-primary">Send Mail</button>
+                    </div>
+                  </div> 
+                </form><!-- End General Form Elements -->
+  
+              </div>
+            </div>
+  
+          </div>
+   
+        </div>
+      </section>
+ 
+ 
+
+  </main><!-- End #main -->
+  {% endblock %}

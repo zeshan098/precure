@@ -1775,7 +1775,7 @@ section {
   font-size: 14px;
 }
 .contact .php-email-form input {
-  height: 44px;
+  height: 35px;
 }
 .contact .php-email-form textarea {
   padding: 10px 12px;
@@ -2447,3 +2447,23 @@ section {
   margin: 5px 1px 3px 0px;
   border: 1px solid rgba(81, 203, 238, 1);
 }
+
+.overlay{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: rgb(255 255 255 / 75%) url("../img/loading.gif") no-repeat center center;
+}
+body.loading{
+  overflow: hidden;   
+}
+/* Make spinner image visible when body element has the loading class */
+body.loading .overlay{
+  display: block;
+}
+
+

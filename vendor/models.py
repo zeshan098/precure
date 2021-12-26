@@ -8,7 +8,9 @@ from django.db.models.fields import DateTimeField
 class VendorInquiry(models.Model):
     STATUS=(
         ('1', 'Open'),
-        ('2', 'Close'), 
+        ('2', 'Sent'), 
+        ('3', 'Close'), 
+        ('4', 'Confirmed'), 
     )   
     user = models.ForeignKey(User, on_delete=models.CASCADE)    
     inquiry_reference_no = models.CharField(max_length=200, null=True, blank=True)
@@ -83,3 +85,24 @@ class Emails(models.Model):
   
     def __str__(self): 
         return self.email_list
+
+class VendorPO(models.Model):
+    STATUS=(
+        ('1', 'Send'), 
+        ('2', 'Close'), 
+    )  
+    reference_no = models.CharField(max_length=200, null=True, blank=True)  
+    quotation = models.TextField(null=True, blank=True)
+    sub_total = models.CharField(max_length=200, null=True, blank=True)
+    discount = models.CharField(max_length=200, null=True, blank=True)
+    total_amount = models.CharField(max_length=200, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)    
+    attachment_file = models.FileField(null=True, blank=True)
+    creation_datetime = models.DateTimeField(auto_now_add=True)
+    update_datetime = models.DateTimeField(auto_now_add=True) 
+    created_by = models.CharField(max_length=50, null=True, blank=True)
+    updated_by = models.CharField(max_length=50, null=True, blank=True)
+    status = models.CharField(max_length=20, null=True, blank=True, choices=STATUS)
+  
+    def __str__(self): 
+        return self.reference_no

@@ -21,7 +21,10 @@ Handle click of the input area
 $('.tags-input').click(function () {
     $(this).find('input').focus();
 });
- 
+
+$('.tags-input-email').click(function () {
+    $(this).find('input').focus();
+});
 
 $('.tags-input-menufacture').click(function () {
     $(this).find('input').focus();
@@ -40,13 +43,19 @@ $(document).on("click", ".tags-input .data .tag .close", function() {
 
 })
 
-$(document).on("click", ".tags-input-menufacture .data .tag .close", function() {
+$(document).on("click", ".tags-input-email .data_email .tag_email .close_email", function() {
     // whatever you do to delete this row
     $(this).parent().remove()
 
 })
 
-$(document).on("click", ".tags-input-model .data .tag .close", function() {
+$(document).on("click", ".tags-input-menufacture .data_menufacture .tag_menufacture .close_menufacture", function() {
+    // whatever you do to delete this row
+    $(this).parent().remove()
+
+})
+
+$(document).on("click", ".tags-input-model .data_model .tag_model .close_model", function() {
     // whatever you do to delete this row
     $(this).parent().remove()
 
@@ -61,6 +70,15 @@ $(document).on("click", ".tags-input .autocomplete-items div", function() {
     let data_holder = $(this).parents().eq(4).find('.data')
     _add_input_tag(data_holder,data.id,data.name)
     $('.tags-input .autocomplete-items').html('');
+
+})
+
+$(document).on("click", ".tags-input-email .autocomplete-items div", function() {
+    let index=$(this).index()
+    let data=_tag_input_suggestions_data[index];
+    let data_holder = $(this).parents().eq(4).find('.data_email')
+    _add_input_tag_email(data_holder,data.id,data.name)
+    $('.email .autocomplete-items').html('');
 
 })
 
@@ -94,6 +112,15 @@ $(".tags-input input").on( "keydown", function(event) {
 
 });
 
+$(".tags-input-email input").on( "keydown", function(event) {
+    if(event.which == 13){
+        let data = $(this).val()
+        if(data!="")_add_input_tag_email(this,data,data)
+    }
+
+
+});
+
 $(".tags-input-menufacture input").on( "keydown", function(event) {
     if(event.which == 13){
         let data = $(this).val()
@@ -118,6 +145,11 @@ $(".tags-input input").on( "focusout", function(event) {
     setTimeout(function(){ $(that).parents().eq(2).find('.autocomplete .autocomplete-items').html(""); }, 500);
 });
 
+$(".tags-input-email input").on( "focusout", function(event) {
+    $(this).val("")
+    var that = this;
+    setTimeout(function(){ $(that).parents().eq(2).find('.autocomplete .autocomplete-items').html(""); }, 500);
+});
 
 $(".tags-input-menufacture input").on( "focusout", function(event) {
     $(this).val("")
@@ -137,14 +169,21 @@ function _add_input_tag(el,data,text){
     $(el).val('')
 }
 
+
+function _add_input_tag_email(el,data,text){
+    let template="<span class=\"tag_email\"><input type=\"text\" class=\"text_email\" value='"+data+"' name=\"email\"><span class=\"close_email\">&times;</span></span>\n";
+    $(el).parents().eq(2).find('.data_email').append(template);
+    $(el).val('')
+}
+
 function _add_input_tag_menufacture(el,data,text){
-    let template="<span class=\"tag_menufacture\"><input type=\"text\" class=\"text_menufacture\" value='"+data+"' name=\"menufacture\"><span class=\"close\">&times;</span></span>\n";
+    let template="<span class=\"tag_menufacture\"><input type=\"text\" class=\"text_menufacture\" value='"+data+"' name=\"menufacture\"><span class=\"close_menufacture\">&times;</span></span>\n";
     $(el).parents().eq(2).find('.data_menufacture').append(template);
     $(el).val('')
 }
 
 function _add_input_tag_model(el,data,text){
-    let template="<span class=\"tag_model\"><input type=\"text\" class=\"text_model\" value='"+data+"' name=\"model\"><span class=\"close\">&times;</span></span>\n";
+    let template="<span class=\"tag_model\"><input type=\"text\" class=\"text_model\" value='"+data+"' name=\"model\"><span class=\"close_model\">&times;</span></span>\n";
     $(el).parents().eq(2).find('.data_model').append(template);
     $(el).val('')
 }
@@ -164,6 +203,22 @@ $(".tags-input input").on( "keyup", function(event) {
     runSuggestions($(this),query)
 
 });
+
+// $(".tags-input-email input").on( "keyup", function(event) {
+//     var query=$(this).val()
+
+//     if(event.which == 8) {
+//         if(query==""){
+//             console.log("Clearing suggestions");
+//             $('.tags-input  .autocomplete-items').html('');
+//             return;
+//         }
+//     }
+
+//     $('.tags-input-email .autocomplete-items').html('');
+//     runSuggestions_email($(this),query)
+
+// });
 
 $(".tags-input-menufacture input").on( "keyup", function(event) {
     var query=$(this).val()

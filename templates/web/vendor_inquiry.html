@@ -6,9 +6,7 @@
     <meta content="air conditioning,boiler,compressor,pump,turbo charger, navigation equipment,diesel engine,steam turbine,hydraulic steering,separator,refrigeration,deck machinery,electrical equipment,instrumentation,automation,communication equipment,control system,auxiliary engine,caterpillar,ingersoll rand,alfa laval,cummins,yanmar,abb,man se,westfalia,saacke,sulzer,wartsila,ihi" name="keywords">
     <link rel="canonical" href="http://www.procurehero.com/" />
     <style>
-      .card {
-          margin-top: 100px;
-        }
+       
         .btn-upload {
             padding: 10px 20px;
             margin-left: 10px;
@@ -55,7 +53,7 @@
             <div class="row">
               <div class="col-md-12 form-group">
                 <label for="name" class="control-label label">Inquiry Reference No</label>
-                <input type="text" name="inquiry_reference_no" class="form-control inquiry_reference_no" id="inquiry_reference_no"  onkeyup="getdata();" required>
+                <input type="text" name="inquiry_reference_no" class="form-control inquiry_reference_no" id="inquiry_reference_no"  required>
                 <div id="res">  </div>
               </div> 
             </div>
@@ -86,7 +84,17 @@
             <div class="row mt-3">
               <div class="col-md-4 form-group mt-3 mt-md-0">
                 <label for="name" class="control-label label">Email</label>
-                <input type="email" class="form-control" name="emails" id="emails" placeholder="Your Email" multiple="multiple" data-role="tagsinput">
+                <div class="tags-input-email" id="myTags">
+                  <span class="data_email">
+                        
+                  </span>
+  
+                      <span class="autocomplete">
+                      <input type="text" class="email">
+                      <div class="autocomplete-items">
+                      </div>
+                  </span>
+                </div>
               </div>
               <div class="col-md-4 form-group">
                 <label for="name" class="control-label label">Phone #</label>
@@ -129,10 +137,11 @@
               <textarea   name="notes" cols="50" rows="5" class="form-control"></textarea>  
             </div>
             
-            <div class="form-group mt-3">  
+            <div class="form-group mt-3"> 
+              <div class="form-group">  
                 <div class="card">
                   <div class="card-header">
-                      <div class="float-left"><strong>Upload in Multi Selection</strong> </div> 
+                      <div class="float-left"><strong>Upload in Multiple Files</strong> </div> 
                   </div>
                   <div class="card-body card-block"> 
                     
@@ -142,8 +151,8 @@
                                   <div class="control-group" id="fields"> 
                                       <div class="controls">
                                           <div class="entry input-group upload-input-group">
-                                              <input class="form-control" name="file" type="file">
-                                              <button class="btn btn-upload btn-success btn-add" type="button">
+                                              <input class="form-control" name="file" type="file" style="height: 35px;">
+                                              <button class="btn btn-upload btn-success btn-add" type="button" style="padding: 0 11px 0px 10px;">
                                                   <i class="fa fa-plus"></i>
                                               </button>
                                           </div>
@@ -161,6 +170,7 @@
                   </div>
                 </div> 
             </div>
+          </div>
              
             <div class="my-3">
               <div class="loading">Loading</div>
