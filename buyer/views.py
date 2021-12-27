@@ -13,7 +13,8 @@ from django.core.mail import send_mail, EmailMultiAlternatives, EmailMessage
 from django.core.files.storage import FileSystemStorage
 from django.template.loader import render_to_string 
 from django.http import HttpResponse, JsonResponse  
-from django.contrib.auth.models import User as DjangoUser 
+from django.contrib.auth.models import User as DjangoUser
+from vendor.models import VendorInquiry 
 from users.models import StaffUser as User, StaffUser 
 from buyer.models import BuyerInquiry, BuyerAttachment, BuyerCategories, BuyerMenufactures, BuyerEmails, BuyerModels, \
                           BuyerInquiryToVendor, BuyerPO
@@ -837,30 +838,36 @@ def send_buyer_inquiry_to_vendor(request):
         inquiry_des = request.POST.get('inquires')  
         myfile = request.POST.getlist('file',"false")
         email_to = "operations@procurehero.com"
-        try:   
-              
-                
-                html_content = render_to_string("admin/buyer/email/inquiry_to_vendor_mail.html", {'inquiry_des':inquiry_des, 
-                'inquiry_type':inquiry_type, 'category_tag':category_list, 'manufacture_tag':menufacture_list,
-                'model':model_list,  }) 
-                # text_content = strip_tags(html_content)
-                msg = EmailMessage("Quotation Form",html_content,"operations@procurehero.com",vendor_email_list)
-                
-                msg.content_subtype = 'html' 
-                for f in myfile:  
-                    print(f) 
-                    msg.attach_file('media/'+f) 
-                msg.send()   
-                 
-                print("send mail")
-                for v in vendor_email_list:
-                    a +=1 
 
-                inquiry_update = BuyerInquiry.objects.filter(id=inquiry_id).update(status=2)
-                BuyerInquiryToVendor.objects.filter(inquiry_id=inquiry_id).update(no_of_vendor_send=a)
-                message = "success"
+        inquiry_status = BuyerInquiry.objects.get(id=inquiry_id) 
+        if inquiry_status.status == '1':
+            try:   
+                
+                    
+                    html_content = render_to_string("admin/buyer/email/inquiry_to_vendor_mail.html", {'inquiry_des':inquiry_des, 
+                    'inquiry_type':inquiry_type, 'category_tag':category_list, 'manufacture_tag':menufacture_list,
+                    'model':model_list,  }) 
+                    # text_content = strip_tags(html_content)
+                    msg = EmailMessage("Quotation Form",html_content,"operations@procurehero.com",vendor_email_list)
+                    
+                    msg.content_subtype = 'html' 
+                    for f in myfile:  
+                        print(f) 
+                        msg.attach_file('media/'+f) 
+                    msg.send()   
+                    
+                    print("send mail")
+                    for v in vendor_email_list:
+                        a +=1 
+
+                    inquiry_update = BuyerInquiry.objects.filter(id=inquiry_id).update(status=2)
+                    BuyerInquiryToVendor.objects.filter(inquiry_id=inquiry_id).update(no_of_vendor_send=a)
+                    message = "success"
+                    return HttpResponse(message)
+            except: 
+                message = "error"
                 return HttpResponse(message)
-        except: 
+        else:
             message = "error"
             return HttpResponse(message)
 
@@ -1046,9 +1053,14 @@ csrf_exempt
 def get_buyer_email(request): 
     if request.method == 'POST':
         reference_no = request.POST.get('searchref') 
-        
-        vendor_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no, status='3') 
-        staff_user = StaffUser.objects.get(user_id=vendor_inquiry_record.user_id) 
-        email = BuyerEmails.objects.filter(buyer_id=staff_user.id) 
-         
-        return JsonResponse(serializers.serialize('json', email, fields=('email_list')), safe=False)
+        vendor_record = VendorInquiry.objects.get(inquiry_reference_no=reference_no, status ='4') 
+        # print(vendor_record.status)
+        if vendor_record.status =='4':
+            vendor_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+            staff_user = StaffUser.objects.get(user_id=vendor_inquiry_record.user_id) 
+            email = BuyerEmails.objects.filter(buyer_id=staff_user.id) 
+            
+            return JsonResponse(serializers.serialize('json', email, fields=('email_list')), safe=False)
+        else:
+            message = "error"
+            return HttpResponse(message)

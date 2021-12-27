@@ -1126,6 +1126,7 @@ $(document).ready(function (e) {
 		 {
       if(data == "error")
       {
+        $("body").removeClass("loading"); 
        $(".alert-danger").show();
       }
       else
@@ -1463,6 +1464,7 @@ $(document).ready(function (e) {
 		 {
       if(data == "error")
       {
+        $("body").removeClass("loading"); 
        $(".alert-danger").show();
       }
       else
@@ -1495,6 +1497,7 @@ $(document).ready(function (e) {
 		 {
       if(data == "error")
       {
+        $("body").removeClass("loading"); 
        $(".alert-danger").show();
       }
       else
@@ -1627,34 +1630,37 @@ $(document).ready(function (e) {
 $(function(){
   $("#buyer_reference_no").bind('input', function(e) {
     e.preventDefault();
-  var token = $('input[name="csrfmiddlewaretoken"]').prop('value');  
-  var searchref = $(this).val(); 
-  if(searchref!='') {
-    $.ajax({ 
-      type: "POST",
-      url: "/buyer/get_buyer_email/",
-      data: {'csrfmiddlewaretoken':token, 'searchref':searchref},
-      dataType: 'json',
-      success: function(response) {
-        var jsonData = JSON.parse(response);
-        for (var i = 0; i < jsonData.length; i++) {
-          var counter = jsonData[i];  
-          var email = counter.fields.email_list; 
-          $('#exampleid').append(`<tr><td>
-                                        <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="buyer_emails" value="${email}" id="customCheck${i}">
-                                        <label class="custom-control-label" for="customCheck${i}">${i}</label>
-                                        </div></td><td>${email}</td></tr>`); 
-        // $("#from_email").val(email); 
-        } 
-        $("#searchResult li").bind("click",function(){
-          setText(this);
-      });
+    var token = $('input[name="csrfmiddlewaretoken"]').prop('value');  
+    var searchref = $(this).val(); 
+    if(searchref!='') {
+      $.ajax({ 
+        type: "POST",
+        url: "/buyer/get_buyer_email/",
+        data: {'csrfmiddlewaretoken':token, 'searchref':searchref},
+        dataType: 'json',
+        success: function(response) { 
+          var jsonData = JSON.parse(response);
+          for (var i = 0; i < jsonData.length; i++) {
+            var counter = jsonData[i];  
+            var email = counter.fields.email_list; 
+            $('#exampleid').append(`<tr><td>
+                                          <div class="custom-control custom-checkbox">
+                                          <input type="checkbox" class="custom-control-input" name="buyer_emails" value="${email}" id="customCheck${i}">
+                                          <label class="custom-control-label" for="customCheck${i}">${i}</label>
+                                          </div></td><td>${email}</td></tr>`); 
+          // $("#from_email").val(email); 
+            } 
+            $("#searchResult li").bind("click",function(){
+              setText(this);
+          });
+        },
+        error: function(response) {
+          $(".alert-danger1").show();
       }
-    });
-  }
-  return false;
-});
+      });
+    }
+    return false;
+  });
 });
 
 
@@ -1675,6 +1681,7 @@ $(document).ready(function (e) {
 	   if(data == "error")
         {
         // invalid file format.
+        $("body").removeClass("loading");
         $(".alert-danger").show();
         }
 	   else
@@ -1783,7 +1790,10 @@ $(function(){
         $("#searchResult li").bind("click",function(){
           setText(this);
       });
-      }
+      },
+      error: function(response) {
+        $(".alert-danger1").show();
+    }
     });
   }
   return false;
@@ -1826,6 +1836,7 @@ $(document).ready(function (e) {
 		 {
       if(data == "error")
       {
+        $("body").removeClass("loading");
        $(".alert-danger").show();
       }
       else

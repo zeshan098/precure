@@ -23,98 +23,97 @@
                 <h5 class="card-title"> </h5>
   
                 <!-- General Form Elements -->
+                
+                <form action="" method="post" role="form" id="add_buyer"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <label for="inputText" class="col-sm-2 col-form-label">Buyer Name</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" placeholder="Your Name">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputEmail" class="col-sm-2 col-form-label">Company Name</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="company_name" id="company_name" placeholder="Your Company">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+                      <div class="col-sm-10">
+                          <input type="email" class="form-control" name="emails" id="emails" multiple="multiple" data-role="tagsinput">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Phone No</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Your Phone #">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Alt Phone No</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="alt_phone_no" class="form-control" id="alt_phone_no" placeholder="Your Phone #">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Website</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="website" class="form-control" id="website" placeholder="Your website">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Location</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="location" class="form-control" id="location" placeholder="Your location">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" name="address" style="height: 100px"></textarea>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Category</label>
+                      <div class="col-sm-10">
+                          <input type="text" class="form-control" name="category" multiple="multiple" placeholder=" " data-role="tagsinput" id="category" >
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Manufacturer</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="menufacture" class="form-control" multiple="multiple" placeholder=" " data-role="tagsinput" id="manufacturer">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputNumber" class="col-sm-2 col-form-label">Model</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="model" class="form-control" multiple="multiple" placeholder=" " data-role="tagsinput" id="model">
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="inputPassword" class="col-sm-2 col-form-label">Notes</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" name="admin_notes" style="height: 100px"></textarea>
+                      </div>
+                    </div> 
+                    <div class="row mb-3">
+                      <label class="col-sm-2 col-form-label">Submit Button</label>
+                      <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit Form</button>
+                      </div>
+                    </div>
+  
+                </form><!-- End General Form Elements -->
                 <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
-                    Successfully Submit
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                  Successfully Submit
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
                     Somthing Wrong!!
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                <form action="" method="post" role="form" id="add_buyer"  enctype="multipart/form-data">
-                    {% csrf_token %}
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-2 col-form-label">Buyer Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="buyer_vendor_name" class="form-control" id="buyer_vendor_name" placeholder="Your Name">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">Company Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="company_name" id="company_name" placeholder="Your Company">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" name="emails" id="emails" multiple="multiple" data-role="tagsinput">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Phone No</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="phone_no" class="form-control" id="phone_no" placeholder="Your Phone #">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Alt Phone No</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="alt_phone_no" class="form-control" id="alt_phone_no" placeholder="Your Phone #">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Website</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="website" class="form-control" id="website" placeholder="Your website">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Location</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="location" class="form-control" id="location" placeholder="Your location">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" name="address" style="height: 100px"></textarea>
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Category</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" name="category" multiple="multiple" placeholder=" " data-role="tagsinput" id="category" >
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Manufacturer</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="menufacture" class="form-control" multiple="multiple" placeholder=" " data-role="tagsinput" id="manufacturer">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputNumber" class="col-sm-2 col-form-label">Model</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="model" class="form-control" multiple="multiple" placeholder=" " data-role="tagsinput" id="model">
-                    </div>
-                  </div>
-                  <div class="row mb-3">
-                    <label for="inputPassword" class="col-sm-2 col-form-label">Notes</label>
-                    <div class="col-sm-10">
-                      <textarea class="form-control" name="admin_notes" style="height: 100px"></textarea>
-                    </div>
-                  </div> 
-                   
-  
-                  <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label">Submit Button</label>
-                    <div class="col-sm-10">
-                      <button type="submit" class="btn btn-primary">Submit Form</button>
-                    </div>
-                  </div>
-  
-                </form><!-- End General Form Elements -->
   
               </div>
             </div>

@@ -23,14 +23,7 @@
                 <h5 class="card-title"> </h5>
   
                 <!-- General Form Elements -->
-                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
-                    Successfully!!
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
-                    Somthing Wrong!!
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                
                 <form action="" method="post" role="form" id="create_buyer_po"  enctype="multipart/form-data">
                     {% csrf_token %} 
                     <div class="row mb-3">
@@ -38,6 +31,10 @@
                       <div class="col-sm-10">
                           <input type="text" name="reference_no" class="form-control buyer_reference_no" id="buyer_reference_no" value="">
                       </div> 
+                    </div>
+                    <div class="alert alert-danger1 bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                      Somthing Wrong!! Please mark quoatation Confirmed.
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     <div class="row mb-3">
                         <label for="inputPassword" class="col-sm-2 col-form-label">From</label>
@@ -122,7 +119,14 @@
                     </div>
                   </div> 
                 </form><!-- End General Form Elements -->
-  
+                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                  Successfully!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                    Somthing Wrong!!
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
               </div>
             </div>
   

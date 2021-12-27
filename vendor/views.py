@@ -1,5 +1,6 @@
 import json
 import datetime
+from io import BytesIO
 from django.shortcuts import render, redirect
 from random import choice
 from string import ascii_lowercase, digits
@@ -16,6 +17,8 @@ from vendor.models import VendorInquiry, VendorAttachment, Categories, Menufactu
 from buyer.models import BuyerInquiry, BuyerInquiryToVendor, BuyerCategories, BuyerMenufactures, BuyerModels, BuyerEmails 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import get_template
+from xhtml2pdf import pisa 
 
 # Create your views here.
 def vendor_inquiry(request): 
@@ -544,6 +547,7 @@ def send_quotation(request):
     today = datetime.datetime.now() 
     no_of_qoute = 1
     if request.is_ajax(): 
+        title = request.POST.get('title')
         reference_no = request.POST.get('reference_no') 
         quotation = request.POST.get('quotation')  
         buyer_email_list = request.POST.getlist('buyer_emails',"false")  
@@ -553,20 +557,46 @@ def send_quotation(request):
         notes = request.POST.get('notes')  
         email_to = request.POST.get('from_email') 
 
-
+        
         VendorInquiry.objects.create(inquiry_reference_no=reference_no,
                                      quotation=quotation, sub_total=sub_total,
                                      discount=discount,total_amount=total, 
                                      notes=notes,user=request.user,status='2')
         try:   
             for buyer_email_list in buyer_email_list: 
+                buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+                staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id) 
+                email = BuyerEmails.objects.filter(buyer_id=staff_user.id)  
+                context = {
+                    'title':title,
+                    'name':staff_user.buyer_vendor_name,
+                    'email':email,
+                    'address': staff_user.address,
+                    'location':staff_user.location,
+                    'phone_no':staff_user.phone_no,
+                    "ref_no":reference_no,
+                    "today": today,
+                    'sub_total':sub_total,
+                    'discount':discount,
+                    'total':total,
+                    'quotation': quotation,
+                    'notes':notes,
+                }
+                template = get_template('admin/vendor/pdf/invoice.html')
+                html  = template.render(context)
+                result = BytesIO() 
+                destination = 'media/'
+                filename = f'{today:%S%M%H%d%m%Y}' + '.pdf'
+                file = open(destination + filename, "w+b")
+                pdf = pisa.CreatePDF(html.encode('utf-8'), dest=file, encoding='utf-8')
                 html_content = render_to_string("admin/vendor/email/quotation_template.html", {'reference_no':reference_no, 
                 'date':today, 'quotation':quotation, 'sub_total':sub_total, 'discount':discount,
                 'total':total, 'notes':notes }) 
                 # text_content = strip_tags(html_content)
                 msg = EmailMultiAlternatives(subject="Quotation", from_email="operations@procurehero.com",
                                 to=[buyer_email_list], body=html_content)
-                msg.attach_alternative(html_content, "text/html")
+                msg.content_subtype = 'html'  
+                msg.attach_file('media/'+filename) 
                 msg.send() 
                 print("send mail") 
                 inquiry_update = BuyerInquiry.objects.get(reference_no=reference_no)
@@ -683,6 +713,7 @@ def send_quotation_to_buyer_email(request):
     no_of_qoute = 1
     if request.is_ajax():
         id = request.POST.get('id')
+        title = request.POST.get('title')
         reference_no = request.POST.get('reference_no')
         date = request.POST.get('date')
         quotation = request.POST.get('quotation')  
@@ -694,13 +725,39 @@ def send_quotation_to_buyer_email(request):
         email_to = "operations@procurehero.com" 
         try:   
             for buyer_email_list in buyer_email_list: 
+                buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+                staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id) 
+                email = BuyerEmails.objects.filter(buyer_id=staff_user.id)  
+                context = {
+                    'title':title,
+                    'name':staff_user.buyer_vendor_name,
+                    'email':email,
+                    'address': staff_user.address,
+                    'location':staff_user.location,
+                    'phone_no':staff_user.phone_no,
+                    "ref_no":reference_no,
+                    "today": today,
+                    'sub_total':sub_total,
+                    'discount':discount,
+                    'total':total,
+                    'quotation': quotation,
+                    'notes':notes,
+                }
+                template = get_template('admin/vendor/pdf/invoice.html')
+                html  = template.render(context)
+                result = BytesIO() 
+                destination = 'media/'
+                filename = f'{today:%S%M%H%d%m%Y}' + '.pdf'
+                file = open(destination + filename, "w+b")
+                pdf = pisa.CreatePDF(html.encode('utf-8'), dest=file, encoding='utf-8')
                 html_content = render_to_string("admin/vendor/email/quotation_template.html", {'reference_no':reference_no, 
                 'date':date, 'quotation':quotation, 'sub_total':sub_total, 'discount':discount,
                 'total':total, 'notes':notes }) 
                 # text_content = strip_tags(html_content) 
                 msg = EmailMultiAlternatives(subject="Quotation", from_email="operations@procurehero.com",
                                 to=[buyer_email_list], body=html_content)
-                msg.attach_alternative(html_content, "text/html")
+                msg.content_subtype = 'html'  
+                msg.attach_file('media/'+filename)
                 msg.send() 
                 print("send mail") 
                 inquiry_update = BuyerInquiry.objects.get(reference_no=reference_no)
@@ -768,10 +825,14 @@ def get_vendor_email(request):
         reference_no = request.POST.get('searchref') 
         
         vendor_inquiry_record = VendorInquiry.objects.get(inquiry_reference_no=reference_no, status='4') 
-        staff_user = StaffUser.objects.get(user_id=vendor_inquiry_record.user_id) 
-        email = Emails.objects.filter(vendor_id=staff_user.id) 
-         
-        return JsonResponse(serializers.serialize('json', email, fields=('email_list')), safe=False)
+        if vendor_inquiry_record.status =='4':
+            staff_user = StaffUser.objects.get(user_id=vendor_inquiry_record.user_id) 
+            email = Emails.objects.filter(vendor_id=staff_user.id) 
+            
+            return JsonResponse(serializers.serialize('json', email, fields=('email_list')), safe=False)
+        else:
+            message = "error"
+            return HttpResponse(message)
 
 @login_required(login_url='/users/login')
 def vendor_po_list(request): 

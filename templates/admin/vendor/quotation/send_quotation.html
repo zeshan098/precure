@@ -23,19 +23,18 @@
                 <h5 class="card-title"> </h5>
   
                 <!-- General Form Elements -->
-                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
-                    Successfully Send Email
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
-                    Somthing Wrong!!
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                
                 <form action="" method="post" role="form" id="send_buyer_quotation"  enctype="multipart/form-data">
                     {% csrf_token %}
-                {% for vendor_quoatation_view in vendor_quoatation_view %}
+                    {% for vendor_quoatation_view in vendor_quoatation_view %}
                      
                     <input type="hidden" name="id" class="form-control" id="id" value="{{vendor_quoatation_view.8}}">
+                    <div class="row mb-3">
+                      <label for="inputText" class="col-sm-2 col-form-label">Tital</label>
+                      <div class="col-sm-10">
+                          <input type="text" name="title" class="form-control" id="title" value="" required>
+                      </div>
+                    </div>
                     <div class="row mb-3">
                       <label for="inputText" class="col-sm-2 col-form-label">Reference #</label>
                       <div class="col-sm-10">
@@ -125,7 +124,14 @@
                   </div>
                 {% endfor %}
                 </form><!-- End General Form Elements -->
-  
+                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                  Successfully Send Email
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                  Somthing Wrong!!
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
               </div>
             </div>
   

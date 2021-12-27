@@ -23,14 +23,7 @@
                 <h5 class="card-title"> </h5>
   
                 <!-- General Form Elements -->
-                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
-                    Successfully Update
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
-                    Somthing Wrong!!
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                
                 <form action="" method="post" role="form" id="update_inquiry_form"  enctype="multipart/form-data">
                     {% csrf_token %}
                 {% for buyer_inquiry_view in buyer_inquiry_view %}
@@ -291,7 +284,14 @@
                   </div>
                 {% endfor %}
                 </form><!-- End General Form Elements -->
-  
+                <div class="alert alert-success bg-success text-light border-0 alert-dismissible fade show" role="alert">
+                  Successfully Update
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+                    Somthing Wrong!!
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
               </div>
             </div>
   

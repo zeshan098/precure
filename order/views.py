@@ -15,6 +15,7 @@ from django.core import serializers
 from django.db import connection
 from django.contrib.auth.models import User as DjangoUser 
 from users.models import StaffUser as User, StaffUser 
+from buyer.models import BuyerInquiry, BuyerEmails
 from order.models import OrderInfo 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt 
@@ -29,6 +30,7 @@ def create_order(request):
     today = datetime.datetime.now() 
     
     if request.is_ajax(): 
+        title = request.POST.get('title') 
         reference_no = request.POST.get('reference_no') 
         to_email = request.POST.getlist('buyer_emails')   
         quotation = request.POST.get('quotation')   
@@ -42,10 +44,30 @@ def create_order(request):
                                      discount=discount,total_amount=total, 
                                      notes=notes,created_by=request.user.id,updated_by=request.user.id, 
                                      status='1')
+        try:
+            buyer_inquiry_record = BuyerInquiry.objects.get(reference_no=reference_no) 
+            staff_user = StaffUser.objects.get(user_id=buyer_inquiry_record.user_id) 
+            email = BuyerEmails.objects.filter(buyer_id=staff_user.id) 
+        except:
+            print("not good")
+        if staff_user.address == None: 
+            staff_address = ''
+        else:
+            staff_address = staff_user.address
         context = {
+            'title':title,
+            'name':staff_user.buyer_vendor_name,
+            'email':email,
+            'address': staff_address,
+            'location':staff_user.location,
+            'phone_no':staff_user.phone_no,
             "ref_no":reference_no,
-            'total':sub_total
-
+            "today": today,
+            'sub_total':sub_total,
+            'discount':discount,
+            'total':total,
+            'quotation': quotation,
+            'notes':notes,
         }
         template = get_template('admin/order/pdf/invoice.html')
         html  = template.render(context)
