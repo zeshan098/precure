@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'dqmu()t&u8h30lxyna%4tlh=d3cmo^ouj&vbjbxff64z6@nyld'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.procurehero.com']
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 # Application definition
