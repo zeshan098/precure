@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'precurehero.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'database-1', 
+        'NAME': 'database-1.cjy4cpzugdqm.us-east-2.rds.amazonaws.com', 
         'USER': 'postgres', 
         'PASSWORD': 'Pakistan098',
         'HOST': '127.0.0.1', 
