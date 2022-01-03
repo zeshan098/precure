@@ -25,8 +25,11 @@ SECRET_KEY = 'dqmu()t&u8h30lxyna%4tlh=d3cmo^ouj&vbjbxff64z6@nyld'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['3.13.143.250','procurehero.com']
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
+
+# ALLOWED_HOSTS = []
+# SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 # Application definition
 
@@ -87,13 +90,24 @@ WSGI_APPLICATION = 'precurehero.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'precure', 
-        'USER': 'postgres', 
+        'NAME': 'precure',
+        'USER': 'postgres',
         'PASSWORD': 'Pakistan098',
-        'HOST': '127.0.0.1', 
+        'HOST': 'database-1.cjy4cpzugdqm.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'precure', 
+#         'USER': 'postgres', 
+#         'PASSWORD': 'Pakistan098',
+#         'HOST': '127.0.0.1', 
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -131,8 +145,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')] 
 STATIC_URL = '/static/'
+print(STATIC_URL)
 MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
