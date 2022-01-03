@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,11 +26,7 @@ SECRET_KEY = 'dqmu()t&u8h30lxyna%4tlh=d3cmo^ouj&vbjbxff64z6@nyld'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = ['3.13.143.250','procurehero.com']
-=======
-ALLOWED_HOSTS = ['*']
->>>>>>> dcfe75e8d2aa10e50fbc2bbad4d6fb50d9086748
+ALLOWED_HOSTS = ['3.13.143.250','procurehero.com'] 
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 # ALLOWED_HOSTS = []
@@ -97,11 +94,7 @@ DATABASES = {
         'NAME': 'precure',
         'USER': 'postgres',
         'PASSWORD': 'Pakistan098',
-<<<<<<< HEAD
-        'HOST': 'database-1.cjy4cpzugdqm.us-east-2.rds.amazonaws.com',
-=======
         'HOST': 'database-1.cjy4cpzugdqm.us-east-2.rds.amazonaws.com', 
->>>>>>> dcfe75e8d2aa10e50fbc2bbad4d6fb50d9086748
         'PORT': '5432',
     }
 }
@@ -153,16 +146,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-<<<<<<< HEAD
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')] 
-STATIC_URL = '/static/'
-print(STATIC_URL)
+STATIC_URL = '/static/' 
 MEDIA_URL = '/media/'
-=======
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
-STATIC_URL = 'http://13.56.18.7/static/'
-MEDIA_URL = 'http://13.56.18.7/media/'
->>>>>>> dcfe75e8d2aa10e50fbc2bbad4d6fb50d9086748
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
