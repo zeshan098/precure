@@ -26,7 +26,7 @@ SECRET_KEY = 'dqmu()t&u8h30lxyna%4tlh=d3cmo^ouj&vbjbxff64z6@nyld'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['3.13.143.250','procurehero.com'] 
+ALLOWED_HOSTS = ['*'] 
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 # ALLOWED_HOSTS = []
